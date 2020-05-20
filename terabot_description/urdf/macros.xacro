@@ -65,9 +65,12 @@
 
       <transmission name="${lr}_trans">
         <type>transmission_interface/SimpleTransmission</type>
-        <joint name="${lr}_wheel_hinge"/>
+        <joint name="${lr}_wheel_hinge">
+          <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+          <mechanicalReduction>10</mechanicalReduction>
+        </joint>
         <actuator name="${lr}Motor">
-          <hardwareInterface>EffortJointInterface</hardwareInterface>
+          <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
           <mechanicalReduction>10</mechanicalReduction>
         </actuator>
       </transmission>

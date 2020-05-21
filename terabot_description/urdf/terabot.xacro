@@ -51,7 +51,7 @@
     <inertial>
       <origin xyz="0 0 ${wheelRadius}" rpy="0 0 0"/>
       <mass value="${chassisMass}"/>
-      <box_inertia m="${chassisMass}" x="${chassisLength}" y="${chassisWidth}" z="${chassisHeight}"/>
+      <xacro:box_inertia m="${chassisMass}" x="${chassisLength}" y="${chassisWidth}" z="${chassisHeight}"/>
     </inertial>
   </link>
 
@@ -79,13 +79,13 @@
     <inertial>
       <origin xyz="${casterRadius-chassisLength/2} 0 ${casterRadius-chassisHeight+wheelRadius}" rpy="0 0 0"/>
       <mass value="${casterMass}"/>
-      <sphere_inertia m="${casterMass}" r="${casterRadius}"/>
+      <xacro:sphere_inertia m="${casterMass}" r="${casterRadius}"/>
     </inertial>
   </link>
 
 
-  <wheel lr="left" tY="-1"/>
-  <wheel lr="right" tY="1"/>
+  <xacro:wheel lr="left" tY="-1"/>
+  <xacro:wheel lr="right" tY="1"/>
 
   <joint name="camera_joint" type="fixed">
     <origin xyz="${-cameraSize+chassisLength/2} 0 ${cameraSize+wheelRadius+cameraSize/2}" rpy="0 0 0"/>
@@ -112,7 +112,7 @@
     <inertial>
       <mass value="${cameraMass}" />
       <origin xyz="0 0 0" rpy="0 0 0"/>
-      <box_inertia m="${cameraMass}" x="${cameraSize}" y="${cameraSize}" z="${cameraSize}" />
+      <xacro:box_inertia m="${cameraMass}" x="${cameraSize}" y="${cameraSize}" z="${cameraSize}" />
     </inertial>
   </link>
 

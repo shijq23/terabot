@@ -9,7 +9,7 @@
 
   <!-- Load the URDF into the ROS Parameter Server -->
   <param name="robot_description"
-	 command="$(find xacro)/xacro.py '$(find terabot_description)/urdf/terabot.xacro'" />
+	 command="$(find xacro)/xacro '$(find terabot_description)/urdf/terabot.xacro'" />
 
   <!-- We resume the logic in empty_world.launch, changing only the name of the world to be launched -->
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
@@ -25,10 +25,10 @@
   <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
 	args="-urdf -model terabot -param robot_description"/>
 
-  <!-- Run RVIZ-->
-  <node name="$(anon rviz)" pkg="rviz" type="rviz" args="$(find terabot_gazebo)/terabot.rviz" output="screen"/>
-
-  <!-- ros_control terabot launch file -->
+   <!-- ros_control terabot launch file -->
   <include file="$(find terabot_control)/launch/terabot_control.launch" /> 
+
+ <!-- Run RVIZ-->
+  <node name="$(anon rviz)" pkg="rviz" type="rviz" args="-d $(find terabot_gazebo)/terabot.rviz" output="screen"/>
 
 </launch>

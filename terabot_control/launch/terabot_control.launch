@@ -1,14 +1,18 @@
 <launch>
 
+  <arg name="gui" default="true"/>
   <!-- Load joint controller configurations from YAML file to parameter server -->
   <rosparam file="$(find terabot_control)/config/terabot_control.yaml" command="load"/>
 
   <!-- load the controllers -->
   <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
-	output="screen" ns="/terabot" args="joint_state_controller
+	output="screen" args="joint_state_controller
 					  rightWheel_effort_controller
-					  leftWheel_effort_controller"/>
+					  leftWheel_effort_controller
+            mobile_base_controller"/>
 
+  <node if="$(arg gui)" name="joint_state_publisher" pkg="joint_state_publisher_gui" type="joint_state_publisher_gui" />
+  <node unless="$(arg gui)" name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
 
   <!-- convert joint states to TF transforms for rviz, etc -->
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"

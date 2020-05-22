@@ -59,7 +59,8 @@ rostopic echo /terabot/joint_states
 ## move it by teleop
 
 ```bash
-rosrun turtlebot3_teleop turtlebot3_teleop_key teleop/cmd_vel:=/terabot/cmd_vel
+rosrun turtlebot3_teleop turtlebot3_teleop_key cmd_vel:=/terabot/cmd_vel
+roslaunch terabot_gazebo teleop_key.launch
 
 ```
 

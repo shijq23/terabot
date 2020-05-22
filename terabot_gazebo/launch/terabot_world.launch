@@ -29,6 +29,6 @@
   <include file="$(find terabot_control)/launch/terabot_control.launch" /> 
 
  <!-- Run RVIZ-->
-  <node name="$(anon rviz)" pkg="rviz" type="rviz" args="-d $(find terabot_gazebo)/terabot.rviz" output="screen"/>
+  <node name="$(anon rviz)" pkg="rviz" type="rviz" args="-d $(find terabot_gazebo)/terabot.rviz" output="screen" required="true"/>
 
 </launch>

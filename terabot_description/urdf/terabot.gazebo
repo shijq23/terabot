@@ -9,17 +9,25 @@
 
  <gazebo>
   <plugin name="differential_drive_controller" filename="libgazebo_ros_diff_drive.so">
-    <alwaysOn>true</alwaysOn>
-    <updateRate>100</updateRate>
-    <leftJoint>left_wheel_hinge</leftJoint>
-    <rightJoint>right_wheel_hinge</rightJoint>
-    <wheelSeparation>${chassisWidth+wheelWidth}</wheelSeparation>
-    <wheelDiameter>${2*wheelRadius}</wheelDiameter>
-    <torque>20</torque>
-    <commandTopic>terabot/cmd_vel</commandTopic>
-    <odometryTopic>terabot/odom_diffdrive</odometryTopic>
-    <odometryFrame>odom</odometryFrame>
-    <robotBaseFrame>footprint</robotBaseFrame>
+      <alwaysOn>true</alwaysOn>
+      <commandTopic>terabot/cmd_vel</commandTopic>
+      <odometryTopic>odom</odometryTopic>
+      <odometryFrame>odom</odometryFrame>
+      <odometrySource>world</odometrySource>
+      <publishOdomTF>true</publishOdomTF>
+      <robotBaseFrame>footprint</robotBaseFrame>
+      <publishWheelTF>true</publishWheelTF>
+      <publishTf>true</publishTf>
+      <publishWheelJointState>true</publishWheelJointState>
+      <legacyMode>false</legacyMode>
+      <updateRate>30</updateRate>
+      <leftJoint>left_wheel_hinge</leftJoint>
+      <rightJoint>right_wheel_hinge</rightJoint>
+      <wheelSeparation>${chassisWidth+wheelWidth}</wheelSeparation>
+      <wheelDiameter>${2*wheelRadius}</wheelDiameter>
+      <wheelAcceleration>1</wheelAcceleration>
+      <wheelTorque>20</wheelTorque>
+      <rosDebugLevel>na</rosDebugLevel>
   </plugin>
 </gazebo>
 
@@ -37,8 +45,12 @@
  </gazebo>
 
  <gazebo reference="caster_wheel">
-  <mu1>0.0</mu1>
-  <mu2>0.0</mu2>
+  <mu1>0.1</mu1>
+  <mu2>0.1</mu2>
+  <kp>1000000.0</kp>
+  <kd>100.0</kd>
+  <minDepth>0.001</minDepth>
+  <maxVel>1.0</maxVel>
   <material>Gazebo/Grey</material>
  </gazebo>  
 
@@ -49,8 +61,8 @@
       <camera name="head">
         <horizontal_fov>1.3962634</horizontal_fov>
         <image>
-          <width>800</width>
-          <height>800</height>
+          <width>320</width>
+          <height>240</height>
           <format>R8G8B8</format>
         </image>
         <clip>

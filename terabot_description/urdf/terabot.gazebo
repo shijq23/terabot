@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+<robot name="terabot_sim" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
  <gazebo>
    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
@@ -11,7 +11,7 @@
   <plugin name="differential_drive_controller" filename="libgazebo_ros_diff_drive.so">
       <alwaysOn>true</alwaysOn>
       <commandTopic>terabot/cmd_vel</commandTopic>
-      <odometryTopic>odom</odometryTopic>
+      <odometryTopic>terabot/odom</odometryTopic>
       <odometryFrame>odom</odometryFrame>
       <odometrySource>world</odometrySource>
       <publishOdomTF>true</publishOdomTF>
@@ -26,19 +26,19 @@
       <wheelSeparation>${chassisWidth+wheelWidth}</wheelSeparation>
       <wheelDiameter>${2*wheelRadius}</wheelDiameter>
       <wheelAcceleration>1</wheelAcceleration>
-      <wheelTorque>20</wheelTorque>
+      <wheelTorque>10</wheelTorque>
       <rosDebugLevel>na</rosDebugLevel>
   </plugin>
 </gazebo>
 
- <gazebo>
+ <!--gazebo>
   <plugin name="ground_truth" filename="libgazebo_ros_p3d.so">
     <frameName>map</frameName>
     <bodyName>chassis</bodyName>
     <topicName>terabot/odom</topicName>
     <updateRate>30.0</updateRate>
   </plugin>
-</gazebo>
+</gazebo-->
 
  <gazebo reference="chassis">
   <material>Gazebo/Orange</material>

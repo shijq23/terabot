@@ -2,7 +2,7 @@
 <package format="2">
   <name>terabot_gazebo</name>
   <version>0.0.0</version>
-  <description>The terabot_gazebo package</description>
+  <description>Gazebo Simulation package for terabot</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
   <!-- Example:  -->
@@ -13,8 +13,8 @@
   <!-- One license tag required, multiple allowed, one license per tag -->
   <!-- Commonly used license strings: -->
   <!--   BSD, MIT, Boost Software License, GPLv2, GPLv3, LGPLv2.1, LGPLv3 -->
-  <license>TODO</license>
-
+  <license>MIT</license>
+  <url type="repository">https://github.com/shijq23/terabot</url>
 
   <!-- Url tags are optional, but multiple are allowed, one per tag -->
   <!-- Optional attribute type can be: website, bugtracker, or repository -->
@@ -52,7 +52,12 @@
   <build_depend>gazebo_ros</build_depend>
   <build_export_depend>gazebo_ros</build_export_depend>
   <exec_depend>gazebo_ros</exec_depend>
-
+  <depend>roscpp</depend>
+  <depend>std_msgs</depend>
+  <depend>sensor_msgs</depend>
+  <depend>geometry_msgs</depend>
+  <depend>nav_msgs</depend>
+  <depend>tf</depend>
 
   <!-- The export tag contains other, unspecified, tags -->
   <export>

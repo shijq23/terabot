@@ -60,7 +60,7 @@
           <child link="${lr}_wheel"/>
           <origin xyz="${+wheelPos-chassisLength/4} ${tY*wheelWidth/2+tY*chassisWidth/2} ${wheelRadius}" rpy="0 0 0" /> 
           <axis xyz="0 1 0" rpy="0 0 0" />
-          <!--limit effort="100" velocity="100"/-->
+          <!--limit effort="100" velocity="1.0"/-->
           <!--joint_properties damping="0.0" friction="0.0"/-->
         </joint>
 
@@ -68,12 +68,11 @@
       <transmission name="${lr}_trans">
         <type>transmission_interface/SimpleTransmission</type>
         <joint name="${lr}_wheel_hinge">
-          <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
-          <mechanicalReduction>10</mechanicalReduction>
+          <!--hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface-->
+          <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
         </joint>
-        <actuator name="${lr}Motor">
-          <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
-          <mechanicalReduction>10</mechanicalReduction>
+        <actuator name="${lr}_wheel_motor">
+          <mechanicalReduction>1.0</mechanicalReduction>
         </actuator>
       </transmission>
 

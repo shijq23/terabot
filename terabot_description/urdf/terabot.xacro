@@ -6,9 +6,9 @@
   <xacro:property name="PI" value="3.1415926535897931"/>
 
   <xacro:property name="chassisHeight" value="0.1"/>
-  <xacro:property name="chassisLength" value="0.4"/>
-  <xacro:property name="chassisWidth" value="0.2"/>
-  <xacro:property name="chassisMass" value="0.5"/>
+  <xacro:property name="chassisLength" value="0.3"/>
+  <xacro:property name="chassisWidth" value="0.16"/>
+  <xacro:property name="chassisMass" value="1.5"/>
 
   <xacro:property name="casterRadius" value="0.05"/>
   <xacro:property name="casterMass" value="0.005"/>
@@ -25,13 +25,6 @@
   <xacro:include filename="$(find terabot_description)/urdf/materials.xacro" />
   <xacro:include filename="$(find terabot_description)/urdf/macros.xacro" />
 
-  <link name="footprint" />
-
-  <joint name="base_joint" type="fixed">
-    <parent link="footprint"/>
-    <child link="chassis"/>
-  </joint>
-
   <link name="chassis">
     <collision>
       <origin xyz="0 0 ${wheelRadius}" rpy="0 0 0"/>
@@ -47,15 +40,24 @@
       </geometry>
       <material name="orange"/>
     </visual>
+  </link>
 
-    <inertial>
+  <!-- Interial link stores the robot's inertial information -->
+  <link name="inertial_link">
+     <inertial>
       <origin xyz="0 0 ${wheelRadius}" rpy="0 0 0"/>
       <mass value="${chassisMass}"/>
       <xacro:box_inertia m="${chassisMass}" x="${chassisLength}" y="${chassisWidth}" z="${chassisHeight}"/>
     </inertial>
   </link>
 
-  <joint name="fixed" type="fixed">
+  <joint name="inertial_joint" type="fixed">
+    <origin xyz="0 0 ${wheelRadius}" rpy="0 0 0" />
+    <parent link="chassis" />
+    <child link="inertial_link" />
+  </joint>
+
+  <joint name="caster_wheel_joint" type="fixed">
     <parent link="chassis"/>
     <child link="caster_wheel"/>
   </joint>

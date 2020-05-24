@@ -3,31 +3,32 @@
 
  <gazebo>
    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
-     <robotNamespace>/terabot</robotNamespace>
+     <robotNamespace>/</robotNamespace>
+     <legacyModeNS>true</legacyModeNS>
    </plugin>
  </gazebo>
 
  <gazebo>
   <plugin name="differential_drive_controller" filename="libgazebo_ros_diff_drive.so">
       <alwaysOn>true</alwaysOn>
-      <commandTopic>terabot/cmd_vel</commandTopic>
-      <odometryTopic>terabot/odom</odometryTopic>
+      <commandTopic>mobile_base_controller/cmd_vel</commandTopic>
+      <odometryTopic>odom</odometryTopic>
       <odometryFrame>odom</odometryFrame>
       <odometrySource>world</odometrySource>
       <publishOdomTF>true</publishOdomTF>
-      <robotBaseFrame>footprint</robotBaseFrame>
+      <robotBaseFrame>chassis</robotBaseFrame>
       <publishWheelTF>true</publishWheelTF>
       <publishTf>true</publishTf>
       <publishWheelJointState>true</publishWheelJointState>
       <legacyMode>false</legacyMode>
-      <updateRate>30</updateRate>
+      <updateRate>50</updateRate>
       <leftJoint>left_wheel_hinge</leftJoint>
       <rightJoint>right_wheel_hinge</rightJoint>
       <wheelSeparation>${chassisWidth+wheelWidth}</wheelSeparation>
       <wheelDiameter>${2*wheelRadius}</wheelDiameter>
-      <wheelAcceleration>1</wheelAcceleration>
+      <wheelAcceleration>1.8</wheelAcceleration>
       <wheelTorque>10</wheelTorque>
-      <rosDebugLevel>na</rosDebugLevel>
+      <rosDebugLevel>Debug</rosDebugLevel>
   </plugin>
 </gazebo>
 
@@ -45,12 +46,12 @@
  </gazebo>
 
  <gazebo reference="caster_wheel">
-  <mu1>0.1</mu1>
-  <mu2>0.1</mu2>
+  <mu1>0.001</mu1>
+  <mu2>0.001</mu2>
   <kp>1000000.0</kp>
-  <kd>100.0</kd>
+  <kd>1.0</kd>
   <minDepth>0.001</minDepth>
-  <maxVel>1.0</maxVel>
+  <maxVel>10.0</maxVel>
   <material>Gazebo/Grey</material>
  </gazebo>  
 

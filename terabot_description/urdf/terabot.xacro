@@ -21,6 +21,8 @@
   <xacro:property name="cameraSize" value="0.05"/>
   <xacro:property name="cameraMass" value="0.1"/>
 
+  <xacro:property name="depthCameraJointHeight" value="0.1"/>
+
   <xacro:include filename="$(find terabot_description)/urdf/terabot.gazebo" />
   <xacro:include filename="$(find terabot_description)/urdf/materials.xacro" />
   <xacro:include filename="$(find terabot_description)/urdf/macros.xacro" />
@@ -57,6 +59,50 @@
     <child link="inertial_link" />
   </joint>
 
+  <!-- depth camera -->
+  <joint name="depth_camera_joint" type="fixed">
+    <origin xyz="0 0 ${depthCameraJointHeight+wheelRadius+chassisHeight/2}" rpy="0 0 0"/>
+    <parent link="chassis"/>
+    <child link="depth_camera"/>
+  </joint>
+
+  <link name="depth_camera">
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+	<box size="${cameraSize} ${cameraSize} ${cameraSize}"/>
+      </geometry>
+    </collision>
+
+    <!--visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+	<box size="${cameraSize} ${cameraSize} ${cameraSize}"/>
+      </geometry>
+      <material name="red"/>
+    </visual-->
+    <visual>
+      <geometry>
+          <mesh filename="package://terabot_description/meshes/realsense_r200.dae"/>
+      </geometry>
+    </visual>
+
+    <inertial>
+      <mass value="${cameraMass}" />
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <xacro:box_inertia m="${cameraMass}" x="${cameraSize}" y="${cameraSize}" z="${cameraSize}" />
+    </inertial>
+  </link>
+
+  <joint name="depth_camera_optical_joint" type="fixed">
+    <origin xyz="0 0 0" rpy="${-PI/2} 0 ${-PI/2}"/>
+    <parent link="depth_camera"/>
+    <child link="depth_camera_frame_optical"/>
+  </joint>
+
+  <link name="depth_camera_frame_optical"/>
+
+  <!-- caster wheel -->
   <joint name="caster_wheel_joint" type="fixed">
     <parent link="chassis"/>
     <child link="caster_wheel"/>
@@ -85,10 +131,11 @@
     </inertial>
   </link>
 
-
+  <!-- differential wheels -->
   <xacro:wheel lr="left" tY="-1"/>
   <xacro:wheel lr="right" tY="1"/>
 
+  <!-- camera -->
   <joint name="camera_joint" type="fixed">
     <origin xyz="${-cameraSize+chassisLength/2} 0 ${cameraSize+wheelRadius+cameraSize/2}" rpy="0 0 0"/>
     <parent link="chassis"/>

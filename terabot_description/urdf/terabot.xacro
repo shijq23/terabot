@@ -21,7 +21,7 @@
   <xacro:property name="cameraSize" value="0.05"/>
   <xacro:property name="cameraMass" value="0.1"/>
 
-  <xacro:property name="depthCameraJointHeight" value="0.1"/>
+  <xacro:property name="depthCameraJointHeight" value="0.2"/>
 
   <xacro:include filename="$(find terabot_description)/urdf/terabot.gazebo" />
   <xacro:include filename="$(find terabot_description)/urdf/materials.xacro" />

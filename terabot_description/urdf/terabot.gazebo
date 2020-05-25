@@ -22,8 +22,8 @@
       <publishWheelJointState>true</publishWheelJointState>
       <legacyMode>false</legacyMode>
       <updateRate>50</updateRate>
-      <leftJoint>left_wheel_hinge</leftJoint>
-      <rightJoint>right_wheel_hinge</rightJoint>
+      <leftJoint>front_left_wheel_hinge</leftJoint>
+      <rightJoint>front_right_wheel_hinge</rightJoint>
       <wheelSeparation>${chassisWidth+wheelWidth}</wheelSeparation>
       <wheelDiameter>${2*wheelRadius}</wheelDiameter>
       <wheelAcceleration>1.8</wheelAcceleration>

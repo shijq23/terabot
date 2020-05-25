@@ -132,8 +132,10 @@
   </link>
 
   <!-- differential wheels -->
-  <xacro:wheel lr="left" tY="-1"/>
-  <xacro:wheel lr="right" tY="1"/>
+  <xacro:wheel fb="front" lr="left" tY="-1" tX="-1"/>
+  <xacro:wheel fb="back" lr="left" tY="-1" tX="1"/>
+  <xacro:wheel fb="front" lr="right" tY="1" tX="-1"/>
+  <xacro:wheel fb="back" lr="right" tY="1" tX="1"/>
 
   <!-- camera -->
   <joint name="camera_joint" type="fixed">

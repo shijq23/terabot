@@ -18,9 +18,9 @@
                   izz="${2*m*r*r/5}" /> 
       </xacro:macro>
 
-     <xacro:macro name="wheel" params="fb lr tY tX">
+     <xacro:macro name="wheel" params="prefix *joint_pose">
 
-       <link name="${fb}_${lr}_wheel">
+       <link name="${prefix}_wheel">
         <collision>
           <origin xyz="0 0 0" rpy="0 ${PI/2} ${PI/2}" />
           <geometry>
@@ -43,7 +43,7 @@
         </inertial>
        </link>
 
-        <gazebo reference="${fb}_${lr}_wheel">
+        <gazebo reference="${prefix}_wheel">
           <mu1 value="0.1"/>
           <mu2 value="0.1"/>
           <kp  value="500000.0" />
@@ -55,23 +55,24 @@
         </gazebo>
 
 
-       <joint name="${fb}_${lr}_wheel_hinge" type="continuous">
+       <joint name="${prefix}_wheel_hinge" type="continuous">
           <parent link="chassis"/>
-          <child link="${fb}_${lr}_wheel"/>
-          <origin xyz="${-tX*wheelPos + tX*chassisLength/4} ${tY*wheelWidth/2+tY*chassisWidth/2} ${wheelRadius}" rpy="0 0 0" /> 
+          <child link="${prefix}_wheel"/>
+          <!--origin xyz="${-tX*wheelPos + tX*chassisLength/4} ${tY*wheelWidth/2+tY*chassisWidth/2} ${wheelRadius}" rpy="0 0 0" /--> 
+          <xacro:insert_block name="joint_pose"/>
           <axis xyz="0 1 0" rpy="0 0 0" />
           <!--limit effort="100" velocity="1.0"/-->
           <!--joint_properties damping="0.0" friction="0.0"/-->
         </joint>
 
 
-      <transmission name="${fb}_${lr}_trans">
+      <transmission name="${prefix}_trans">
         <type>transmission_interface/SimpleTransmission</type>
-        <joint name="${fb}_${lr}_wheel_hinge">
+        <joint name="${prefix}_wheel_hinge">
           <!--hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface-->
           <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
         </joint>
-        <actuator name="${fb}_${lr}_wheel_motor">
+        <actuator name="${prefix}_wheel_motor">
           <mechanicalReduction>1.0</mechanicalReduction>
         </actuator>
       </transmission>

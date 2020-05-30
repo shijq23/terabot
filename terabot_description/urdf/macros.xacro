@@ -44,24 +44,24 @@
        </link>
 
         <gazebo reference="${prefix}_wheel">
-          <mu1 value="0.1"/>
-          <mu2 value="0.1"/>
+          <mu1 value="1.0"/>
+          <mu2 value="1.0"/>
           <kp  value="500000.0" />
-          <kd  value="10.0" />
-          <minDepth>0.001</minDepth>
-          <maxVel>10.1</maxVel>
+          <kd  value="1.0" />
+          <!--minDepth>0.001</minDepth-->
+          <!--maxVel>10.1</maxVel-->
           <fdir1 value="1 0 0"/>
           <material>Gazebo/Black</material>
         </gazebo>
 
 
        <joint name="${prefix}_wheel_hinge" type="continuous">
-          <parent link="chassis"/>
+          <parent link="base_link"/>
           <child link="${prefix}_wheel"/>
           <!--origin xyz="${-tX*wheelPos + tX*chassisLength/4} ${tY*wheelWidth/2+tY*chassisWidth/2} ${wheelRadius}" rpy="0 0 0" /--> 
           <xacro:insert_block name="joint_pose"/>
           <axis xyz="0 1 0" rpy="0 0 0" />
-          <!--limit effort="100" velocity="1.0"/-->
+          <!--limit effort="100" velocity="10.0"/-->
           <!--joint_properties damping="0.0" friction="0.0"/-->
         </joint>
 

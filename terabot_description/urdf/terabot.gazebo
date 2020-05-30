@@ -4,7 +4,7 @@
  <gazebo>
    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
      <robotNamespace>/</robotNamespace>
-     <legacyModeNS>true</legacyModeNS>
+     <!--legacyModeNS>true</legacyModeNS-->
    </plugin>
  </gazebo>
 
@@ -16,7 +16,7 @@
       <odometryFrame>odom</odometryFrame>
       <odometrySource>world</odometrySource>
       <publishOdomTF>true</publishOdomTF>
-      <robotBaseFrame>chassis</robotBaseFrame>
+      <robotBaseFrame>base_link</robotBaseFrame>
       <publishWheelTF>true</publishWheelTF>
       <publishTf>true</publishTf>
       <publishWheelJointState>true</publishWheelJointState>
@@ -35,13 +35,13 @@
  <!--gazebo>
   <plugin name="ground_truth" filename="libgazebo_ros_p3d.so">
     <frameName>map</frameName>
-    <bodyName>chassis</bodyName>
+    <bodyName>base_link</bodyName>
     <topicName>terabot/odom</topicName>
     <updateRate>30.0</updateRate>
   </plugin>
 </gazebo-->
 
- <gazebo reference="chassis">
+ <gazebo reference="base_link">
   <material>Gazebo/Orange</material>
  </gazebo>
 
@@ -50,7 +50,7 @@
   <mu2>0.001</mu2>
   <kp>1000000.0</kp>
   <kd>1.0</kd>
-  <minDepth>0.001</minDepth>
+  <!--minDepth>0.001</minDepth-->
   <maxVel>10.0</maxVel>
   <material>Gazebo/Grey</material>
  </gazebo>  
@@ -101,7 +101,7 @@
           </image>
           <clip>
             <near>0.2</near>
-            <far>8.0</far>
+            <far>10.0</far>
           </clip>
         </camera>
         <plugin name="d435i_controller" filename="libgazebo_ros_openni_kinect.so">
@@ -131,7 +131,7 @@
     <plugin name="imu_controller" filename="libhector_gazebo_ros_imu.so">
       <robotNamespace>/</robotNamespace>
       <updateRate>50.0</updateRate>
-      <bodyName>chassis</bodyName>
+      <bodyName>base_link</bodyName>
       <topicName>imu/data</topicName>
       <accelDrift>0.005 0.005 0.005</accelDrift>
       <accelGaussianNoise>0.005 0.005 0.005</accelGaussianNoise>

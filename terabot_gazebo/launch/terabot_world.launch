@@ -7,10 +7,12 @@
   <arg name="headless" default="false"/>
   <arg name="debug" default="false"/>
 
-  <arg name="x" default="0.0"/>
-  <arg name="y" default="0.0"/>
-  <arg name="z" default="0.0"/>
-  <arg name="yaw" default="0.0"/>
+  <arg name="x" default="0"/>
+  <arg name="y" default="0"/>
+  <arg name="z" default="0"/>
+  <arg name="roll" default="0"/>
+  <arg name="pitch" default="0"/>
+  <arg name="yaw" default="0"/>
 
   <!-- Load the URDF into the ROS Parameter Server -->
   <param name="robot_description"
@@ -18,7 +20,7 @@
 
   <!-- We resume the logic in empty_world.launch, changing only the name of the world to be launched -->
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
-    <arg name="world_name" value="$(find terabot_gazebo)/worlds/test.world"/>
+    <arg name="world_name" value="$(find terabot_gazebo)/worlds/clearpath_playpen.world"/>
     <arg name="debug" value="$(arg debug)" />
     <arg name="gui" value="$(arg gui)" />
     <arg name="paused" value="$(arg paused)"/>
@@ -26,24 +28,26 @@
     <arg name="headless" value="$(arg headless)"/>
   </include>
 
+  <!-- ros_control terabot launch file -->
+  <include file="$(find terabot_control)/launch/terabot_control.launch" /> 
+
   <!-- Run a python script to the send a service call to gazebo_ros to spawn a URDF robot -->
   <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
 	args="-x $(arg x)
         -y $(arg y)
         -z $(arg z)
+        -R $(arg roll)
+        -P $(arg pitch)
         -Y $(arg yaw)
         -unpause
         -urdf -model terabot -param robot_description"/>
-
-  <!-- ros_control terabot launch file -->
-  <include file="$(find terabot_control)/launch/terabot_control.launch" /> 
 
   <!-- Include poincloud_to_laserscan if simulated realsense D435i is attached -->
   <node pkg="pointcloud_to_laserscan" type="pointcloud_to_laserscan_node" name="pointcloud_to_laserscan" output="screen">
     <remap from="cloud_in" to="/terabot/depth1/depth/points"/>
     <remap from="scan" to="scan"/>
     <rosparam>
-      target_frame: chassis # Leave empty to output scan in the pointcloud frame
+      target_frame: base_link # Leave empty to output scan in the pointcloud frame
       tolerance: 1.0
       min_height: 0.05
       max_height: 1.0
@@ -52,8 +56,8 @@
       angle_max: 0.52 # 30.0*M_PI/180.0
       angle_increment: 0.005 # M_PI/360.0
       scan_time: 0.3333
-      range_min: 0.45
-      range_max: 4.0
+      range_min: 0.25
+      range_max: 24.0
       use_inf: true
 
       # Concurrency level, affects number of pointclouds queued for processing and number of threads used

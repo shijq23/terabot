@@ -24,3 +24,13 @@ imu0_config: [false, false, false,
 imu0_differential: true
 imu0_queue_size: 10
 imu0_remove_gravitational_acceleration: true
+
+publish_tf: true
+transform_time_offset: 0.05
+publish_acceleration: false
+
+initial_state: [0.0,  0.0,  0.0,
+                0.0,  0.0,  0.0,
+                0.0,  0.0,  0.0,
+                0.0,  0.0,  0.0,
+                0.0,  0.0,  0.0]

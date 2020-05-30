@@ -44,6 +44,15 @@
     </visual>
   </link>
 
+  <!-- Base footprint is on the ground under the robot -->
+  <link name="base_footprint"/>
+
+  <joint name="base_footprint_joint" type="fixed">
+    <origin xyz="0 0 ${-wheelRadius}" rpy="0 0 0" />
+    <parent link="base_link" />
+    <child link="base_footprint" />
+  </joint>
+
   <!-- Interial link stores the robot's inertial information -->
   <link name="inertial_link">
      <inertial>

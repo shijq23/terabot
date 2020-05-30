@@ -1,0 +1,3 @@
+<launch>
+  <include file="$(find terabot_control)/launch/teleop.launch" /> 
+</launch>

@@ -1,7 +1,7 @@
 # Publish all joint states -----------------------------------
 joint_state_controller:
   type: joint_state_controller/JointStateController
-  publish_rate: 30  
+  publish_rate: 30
 
 # Effort Controllers ---------------------------------------
 # leftWheel_effort_controller:
@@ -18,10 +18,11 @@ mobile_base_controller:
   type: diff_drive_controller/DiffDriveController
   left_wheel: ['front_left_wheel_hinge','back_left_wheel_hinge']
   right_wheel: ['front_right_wheel_hinge','back_right_wheel_hinge']
-  pose_covariance_diagonal: [0.001, 0.001, 0.001, 0.001, 0.001, 0.003]
-  twist_covariance_diagonal: [0.001, 0.001, 0.001, 0.001, 0.001, 0.003]
+  pose_covariance_diagonal: [0.001, 0.001, 0.001, 0.001, 0.001, 0.03]
+  twist_covariance_diagonal: [0.001, 0.001, 0.001, 0.001, 0.001, 0.03]
   cmd_vel_timeout: 0.25
   velocity_rolling_window_size: 2
+  publish_rate: 30
 
   base_frame_id: base_link
   # Odometry fused with IMU is published by robot_localization, so

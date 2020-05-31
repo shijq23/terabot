@@ -21,7 +21,11 @@
   <xacro:property name="cameraSize" value="0.02"/>
   <xacro:property name="cameraMass" value="0.1"/>
 
+  <!--depth camera mounting position-->
   <xacro:property name="depthCameraJointHeight" value="0.15"/>
+
+  <!-- Wheel Mounting Positions -->
+  <xacro:property name="wheel_vertical_offset" value="0.015" />
 
   <xacro:include filename="$(find terabot_description)/urdf/terabot.gazebo" />
   <xacro:include filename="$(find terabot_description)/urdf/materials.xacro" />
@@ -29,9 +33,9 @@
 
   <link name="base_link">
     <collision>
-      <origin xyz="0 0 ${wheelRadius}" rpy="0 0 0"/>
+      <origin xyz="0 0 ${wheelRadius}" rpy="0 0 0" />
       <geometry>
-	<box size="${chassisLength} ${chassisWidth} ${chassisHeight}"/>
+	<box size="${chassisLength} ${chassisWidth + wheelWidth*2} ${chassisHeight+wheelRadius}"/>
       </geometry>
     </collision>
 
@@ -48,7 +52,7 @@
   <link name="base_footprint"/>
 
   <joint name="base_footprint_joint" type="fixed">
-    <origin xyz="0 0 ${-wheelRadius}" rpy="0 0 0" />
+    <origin xyz="0 0 0" rpy="0 0 0" />
     <parent link="base_link" />
     <child link="base_footprint" />
   </joint>

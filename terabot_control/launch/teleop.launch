@@ -8,6 +8,7 @@
 
     <group unless="$(optenv TERABOT_LOGITECH 0)" >
       <rosparam command="load" file="$(find terabot_control)/config/teleop_ps4.yaml" />
+      <param name="joy_node/dev" value="$(arg joy_dev)" />
     </group>
 
     <group if="$(optenv TERABOT_LOGITECH 0)" >

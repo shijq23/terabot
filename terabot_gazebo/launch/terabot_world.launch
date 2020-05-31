@@ -47,7 +47,7 @@
     <remap from="cloud_in" to="/terabot/depth1/depth/points"/>
     <remap from="scan" to="scan"/>
     <rosparam>
-      target_frame: base_link # Leave empty to output scan in the pointcloud frame
+      target_frame: depth_camera # Leave empty to output scan in the pointcloud frame
       tolerance: 1.0
       min_height: 0.05
       max_height: 1.0
@@ -56,16 +56,26 @@
       angle_max: 0.52 # 30.0*M_PI/180.0
       angle_increment: 0.005 # M_PI/360.0
       scan_time: 0.3333
-      range_min: 0.25
-      range_max: 24.0
+      range_min: 0.2
+      range_max: 10.0
       use_inf: true
 
       # Concurrency level, affects number of pointclouds queued for processing and number of threads used
       # 0 : Detect number of cores
       # 1 : Single threaded
       # 2->inf : Parallelism level
-      concurrency_level: 1
+      concurrency_level: 0
     </rosparam>
+  </node>
+
+  <!--- Depth image to laser scan -->
+  <node pkg="depthimage_to_laserscan" type="depthimage_to_laserscan" name="depthimage_to_laserscan" >
+    <param name="scan_height" value="1"/>
+    <param name="scan_time" value="0.033"/>
+    <param name="range_min" value="0.2"/>
+    <param name="range_max" value="10.0"/>
+    <param name="output_frame_id" value="depth_camera"/>
+    <remap from="image" to="/terabot/depth1/depth/image_raw" />
   </node>
  <!-- Run RVIZ-->
   <node name="$(anon rviz)" pkg="rviz" type="rviz" args="-d $(find terabot_gazebo)/terabot.rviz" output="screen" required="true"/>

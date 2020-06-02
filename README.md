@@ -74,10 +74,23 @@ rosrun image_view image_view image:=/terabot/camera1/image_raw
 
 ```bash
 rosrun tf view_frames
+rosrun tf view_monitor
+roswtf
+```
+# visualize the TF Tree
+
+```bash
+rosrunrqt_tf_tree rqt_tf_tree
 ```
 
 ## node graph
 
 ```bash
 rqt_graph
+```
+
+## find a pi
+
+```bash
+sudo nmap -sP 192.168.2.1/24 | awk '/^Nmap/{ip=$NF}/B8:27:EB/{print ip}'
 ```

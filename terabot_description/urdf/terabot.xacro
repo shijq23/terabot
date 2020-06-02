@@ -96,7 +96,7 @@
     </visual-->
     <visual>
       <geometry>
-          <mesh filename="package://terabot_description/meshes/realsense_r200.dae"/>
+          <mesh filename="package://terabot_description/meshes/realsense_r200.dae" scale="2 2 2"/>
       </geometry>
     </visual>
 

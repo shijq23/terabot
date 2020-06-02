@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<launch>
+
+  <arg name="scan_topic" default="scan" />
+
+  <node pkg="octomap_server" type="octomap_server_node" name="octomap_server">
+    <rosparam>
+      sensor_model/max_range: 10.0
+      frame_id: odom
+      base_frame_id: base_footprint
+      pointcloud_max_z: 3.0
+      occupancy_max_z: 3.0
+
+    </rosparam>
+    <remap from="scan" to="$(arg scan_topic)"/>
+    <!-- data source to integrate (PointCloud2) -->
+    <remap from="/cloud_in" to="/terabot/depth1/depth/points" />
+    <!--remap from="tf_static" to="/tf" /-->
+  </node>
+</launch>

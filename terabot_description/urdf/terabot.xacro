@@ -32,6 +32,7 @@
   <xacro:include filename="$(find terabot_description)/urdf/macros.xacro" />
 
   <link name="base_link">
+    <pose>0 0 ${wheelRadius} 0 0 0</pose>
     <collision>
       <origin xyz="0 0 ${wheelRadius}" rpy="0 0 0" />
       <geometry>
@@ -192,7 +193,8 @@
   <link name="imu_link"/>
   <joint name="imu_joint" type="fixed">
     <!--origin xyz="0.19 0 0.149" rpy="0 ${-PI/2} ${PI}" /-->
-    <origin xyz="${-cameraSize+chassisLength/2} 0 ${cameraSize+wheelRadius+cameraSize/2}" rpy="0 ${-PI/2} ${PI}"/>
+    <!--origin xyz="${-cameraSize+chassisLength/2} 0 ${cameraSize+wheelRadius+cameraSize/2}" rpy="0 ${-PI/2} ${PI}"/-->
+    <origin xyz="0 0 ${cameraSize+wheelRadius+cameraSize/2}" rpy="0 0 0"/>
     <parent link="base_link" />
     <child link="imu_link" />
   </joint>

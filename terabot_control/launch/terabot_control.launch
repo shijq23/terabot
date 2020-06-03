@@ -30,7 +30,7 @@
   respawn="false" output="screen">
     <!--param name="robot_description" command="$(find xacro)/xacro '$(find terabot_description)/urdf/terabot.xacro'" /-->
     <!--remap from="/joint_states" to="/terabot/joint_states" /-->
-    <param name="publish_frequency" type="double" value="30.0" />
+    <!--param name="publish_frequency" type="double" value="30.0" /-->
   </node>
 
   <node pkg="twist_mux" type="twist_mux" name="twist_mux">

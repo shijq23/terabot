@@ -13,6 +13,26 @@ joint_state_controller:
   # joint: right_wheel_hinge
   # pid: {p: 100.0, i: 0.1, d: 10.0}
 
+# PID control
+# gazebo_ros_control:
+#   pid_gains:
+#     front_left_wheel_hinge:
+#       p: 100.0
+#       i: 0.01
+#       d: 10.0
+#     back_left_wheel_hinge:
+#       p: 100.0
+#       i: 0.01
+#       d: 10.0
+#     front_right_wheel_hinge:
+#       p: 100.0
+#       i: 0.01
+#       d: 10.0
+#     back_right_wheel_hinge:
+#       p: 100.0
+#       i: 0.01
+#       d: 10.0
+
 # Diff Drive Controller ---------------------------------------
 mobile_base_controller:
   type: diff_drive_controller/DiffDriveController

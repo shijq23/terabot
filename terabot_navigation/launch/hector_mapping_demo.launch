@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<launch>
+  <!--- Run hector mapping -->
+  <include file="$(find terabot_navigation)/launch/hector_mapping.launch" />
+
+  <!--- Run Move Base -->
+  <include file="$(find terabot_navigation)/launch/move_base_mapless_demo.launch" />
+
+</launch>

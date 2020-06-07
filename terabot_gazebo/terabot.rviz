@@ -81,17 +81,16 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
+        base_footprint:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
         base_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
         camera:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        caster_wheel:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -130,67 +129,19 @@ Visualization Manager:
       Value: true
       Visual Enabled: true
     - Class: rviz/TF
-      Enabled: true
+      Enabled: false
       Frame Timeout: 15
       Frames:
         All Enabled: false
-        back_left_wheel:
-          Value: true
-        back_right_wheel:
-          Value: true
-        base_link:
-          Value: true
-        camera:
-          Value: true
-        caster_wheel:
-          Value: true
-        depth_camera:
-          Value: true
-        depth_camera_frame_optical:
-          Value: true
-        front_left_wheel:
-          Value: true
-        front_right_wheel:
-          Value: true
-        imu_link:
-          Value: true
-        inertial_link:
-          Value: true
-        map:
-          Value: true
-        odom:
-          Value: true
       Marker Scale: 1
       Name: TF
       Show Arrows: true
       Show Axes: true
       Show Names: true
       Tree:
-        map:
-          {}
-        odom:
-          base_link:
-            back_left_wheel:
-              {}
-            back_right_wheel:
-              {}
-            camera:
-              {}
-            caster_wheel:
-              {}
-            depth_camera:
-              depth_camera_frame_optical:
-                {}
-            front_left_wheel:
-              {}
-            front_right_wheel:
-              {}
-            imu_link:
-              {}
-            inertial_link:
-              {}
+        {}
       Update Interval: 0
-      Value: true
+      Value: false
     - Class: rviz/Image
       Enabled: true
       Image Topic: /terabot/camera1/image_raw
@@ -293,14 +244,14 @@ Visualization Manager:
       Radius: 0.029999999329447746
       Shaft Diameter: 0.10000000149011612
       Shaft Length: 0.10000000149011612
-      Topic: /move_base/DWAPlannerROS/global_plan
+      Topic: /move_base/NavfnROS/plan
       Unreliable: false
       Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
     Default Light: true
-    Fixed Frame: odom
+    Fixed Frame: map
     Frame Rate: 30
   Name: root
   Tools:

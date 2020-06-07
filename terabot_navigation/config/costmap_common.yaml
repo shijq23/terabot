@@ -9,8 +9,8 @@ transform_tolerance: 0.5
 
 resolution: 0.05
 
-obstacle_range: 8.0
-raytrace_range: 10.0
+obstacle_range: 2.5
+raytrace_range: 3.0
 
 #layer definitions
 static:
@@ -18,8 +18,9 @@ static:
     subscribe_to_updates: true
 
 obstacles_laser:
-    observation_sources: laser
-    laser: {data_type: LaserScan, clearing: true, marking: true, topic: scan, inf_is_valid: true, sensor_frame: depth_camera}
+    observation_sources: laser_sensor #point_cloud
+    laser_sensor: {data_type: LaserScan, clearing: true, marking: true, topic: scan, inf_is_valid: true, sensor_frame: depth_camera}
+    #point_cloud: {data_type: PointCloud2, clearing: true, marking: true, topic: /terabot/depth1/depth/points, sensor_frame: depth_camera}
 
 inflation:
     inflation_radius: 1.0

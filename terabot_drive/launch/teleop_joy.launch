@@ -1,0 +1,13 @@
+<launch>
+    
+  <include file="$(find i2cpwm_board)/launch/i2cpwm_node.launch"/>
+  <include file="$(find terabot_control)/launch/teleop.launch" />
+  <node pkg="twist_mux" type="twist_mux" name="twist_mux">
+    <rosparam command="load" file="$(find terabot_control)/config/twist_mux.yaml" />
+    <remap from="cmd_vel_out" to="mobile_base_controller/cmd_vel"/>
+  </node>
+  <node pkg="terabot_drive" name="terabot_llc" type="low_level_control.py" output="screen" >
+  </node>
+
+
+</launch>

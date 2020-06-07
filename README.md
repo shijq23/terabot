@@ -80,7 +80,7 @@ roswtf
 # visualize the TF Tree
 
 ```bash
-rosrunrqt_tf_tree rqt_tf_tree
+rosrun rqt_tf_tree rqt_tf_tree
 ```
 
 ## node graph

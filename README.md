@@ -94,3 +94,10 @@ rqt_graph
 ```bash
 sudo nmap -sP 192.168.2.1/24 | awk '/^Nmap/{ip=$NF}/B8:27:EB/{print ip}'
 ```
+
+## check parameters configuration
+
+```bash
+rosrun rqt_gui rqt_gui
+rosrun rqt_reconfigure rqt_reconfigure
+```

@@ -203,13 +203,11 @@ class TerabotLowLevelCtrl():
 
         #--- Create the Subscriber to Twist commands
         self.ros_sub_twist          = rospy.Subscriber("mobile_base_controller/cmd_vel", Twist, self.set_actuators_from_cmdvel)
-        rospy.loginfo("> Subscriber initialized")
 
         #--- Get the last time e got a commands
         self._last_time_cmd_rcv     = time.time()
-        self._timeout_s             = 5
+        self._timeout_s             = 1
 
-        rospy.loginfo("> Initialization complete")
 
     def set_actuators_from_cmdvel(self, message):
         """
@@ -231,7 +229,7 @@ class TerabotLowLevelCtrl():
 
     @property
     def is_controller_connected(self):
-        rospy.loginfo("is_controller_connected %s" % (time.time() - self._last_time_cmd_rcv))
+        #rospy.loginfo("is_controller_connected %s" % (time.time() - self._last_time_cmd_rcv))
         return(time.time() - self._last_time_cmd_rcv < self._timeout_s)
 
     def run(self):
@@ -240,7 +238,7 @@ class TerabotLowLevelCtrl():
         rate = rospy.Rate(10)
 
         while not rospy.is_shutdown():
-            rospy.loginfo("run %s %d" % (self._last_time_cmd_rcv, self.is_controller_connected))
+            #rospy.loginfo("run %s %d" % (self._last_time_cmd_rcv, self.is_controller_connected))
             if not self.is_controller_connected:
                 self.set_actuators_idle()
 

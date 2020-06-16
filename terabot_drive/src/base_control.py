@@ -1,10 +1,11 @@
 #!/usr/bin/env python
-
+from __future__ import division
 import time
 import Adafruit_PCA9685
 import RPi.GPIO as GPIO
 from Adafruit_GPIO import I2C
 import rospy
+from geometry_msgs.msg import Twist
 
 # sudo apt install RPi.GPIO
 # pip install adafruit-pca9685
@@ -32,7 +33,7 @@ def map_range(x, X_min, X_max, Y_min, Y_max):
     Y_range = Y_max - Y_min
     XY_ratio = X_range/Y_range
 
-    y = ((x-X_min) / XY_ratio + Y_min) // 1
+    y = ((x-X_min) / XY_ratio + Y_min)
 
     return int(y)
 
@@ -84,7 +85,7 @@ class PWMSteering:
         self.controller = controller
         self.left_pulse = left_pulse
         self.right_pulse = right_pulse
-        self.pulse = map_range(0, self.LEFT_ANGLE, self.RIGHT_ANGLE,
+        self.pulse = map_range(0, PWMSteering.LEFT_ANGLE, PWMSteering.RIGHT_ANGLE,
                                self.left_pulse, self.right_pulse)
         self.running = True
         rospy.logdebug('PWM Steering created')

@@ -11,19 +11,21 @@ from geometry_msgs.msg import Twist
 # pip install adafruit-pca9685
 # pip install adafruit-gpio
 
-class SunFounder:
-    #STEERING
-    #used for the DRIVE_TRAIN_TYPE=SUNFOUNDER_PWM
-    STEERING_CHANNEL = 0            #channel on the 9685 pwm board 0-15
-    STEERING_LEFT_PWM = 260         #pwm value for full left steering
-    STEERING_RIGHT_PWM = 500        #pwm value for full right steering
 
-    #THROTTLE
-    #used for the DRIVE_TRAIN_TYPE=SUNFOUNDER_PWM
-    THROTTLE_CHANNEL = 4            #channel on the 9685 pwm board 0-15
-    THROTTLE_MAX_PWM = 1200         #pwm value for max movement (throttle ->= 1, -1)
-    THROTTLE_MIN_PWM = 500          #pwm value for min movement (throttle -> 0)
-    #THROTTLE_ZERO_PWM = 0          #pwm value for no movement (throttle = 0)
+class SunFounder:
+    # STEERING
+    # used for the DRIVE_TRAIN_TYPE=SUNFOUNDER_PWM
+    STEERING_CHANNEL = 0  # channel on the 9685 pwm board 0-15
+    STEERING_LEFT_PWM = 260  # pwm value for full left steering
+    STEERING_RIGHT_PWM = 500  # pwm value for full right steering
+
+    # THROTTLE
+    # used for the DRIVE_TRAIN_TYPE=SUNFOUNDER_PWM
+    THROTTLE_CHANNEL = 4  # channel on the 9685 pwm board 0-15
+    THROTTLE_MAX_PWM = 1200  # pwm value for max movement (throttle ->= 1, -1)
+    THROTTLE_MIN_PWM = 500  # pwm value for min movement (throttle -> 0)
+    # THROTTLE_ZERO_PWM = 0          #pwm value for no movement (throttle = 0)
+
 
 def map_range(x, X_min, X_max, Y_min, Y_max):
     ''' 
@@ -194,38 +196,38 @@ class TerabotLowLevelCtrl():
         rospy.init_node('terabot_llc')
 
         self.actuators = {}
-        self.actuators['throttle']  = SunFounder_Motor_Hat(max_pulse=SunFounder.THROTTLE_MAX_PWM, min_pulse=SunFounder.THROTTLE_MIN_PWM)
+        self.actuators['throttle'] = SunFounder_Motor_Hat(
+            max_pulse=SunFounder.THROTTLE_MAX_PWM, min_pulse=SunFounder.THROTTLE_MIN_PWM)
         steering_controller = PCA9685(SunFounder.STEERING_CHANNEL)
-        self.actuators['steering']  = PWMSteering(controller=steering_controller,
-                           left_pulse=SunFounder.STEERING_LEFT_PWM,
-                           right_pulse=SunFounder.STEERING_RIGHT_PWM)
-        rospy.loginfo("> Actuators initialized")
+        self.actuators['steering'] = PWMSteering(controller=steering_controller,
+                                                 left_pulse=SunFounder.STEERING_LEFT_PWM,
+                                                 right_pulse=SunFounder.STEERING_RIGHT_PWM)
 
-        #--- Create the Subscriber to Twist commands
-        self.ros_sub_twist          = rospy.Subscriber("mobile_base_controller/cmd_vel", Twist, self.set_actuators_from_cmdvel)
+        # --- Create the Subscriber to Twist commands
+        self.ros_sub_twist = rospy.Subscriber(
+            "mobile_base_controller/cmd_vel", Twist, self.set_actuators_from_cmdvel)
 
-        #--- Get the last time e got a commands
-        self._last_time_cmd_rcv     = time.time()
-        self._timeout_s             = 1
-
+        # --- Get the last time e got a commands
+        self._last_time_cmd_rcv = time.time()
+        self._timeout_s = 1
 
     def set_actuators_from_cmdvel(self, message):
         """
         Get a message from cmd_vel, assuming a maximum input of 1
         """
-        #-- Save the time
+        # -- Save the time
         self._last_time_cmd_rcv = time.time()
 
-        #-- Convert vel into servo values
+        # -- Convert vel into servo values
         self.actuators['throttle'].run(message.linear.x)
         self.actuators['steering'].run(message.angular.z)
-        rospy.loginfo("Got a command v = %2.1f  s = %2.1f"%(message.linear.x, message.angular.z))
+        rospy.loginfo("Got a command v = %2.1f  s = %2.1f" %
+                      (message.linear.x, message.angular.z))
 
     def set_actuators_idle(self):
-        #-- Convert vel into servo values
+        # -- Convert vel into servo values
         self.actuators['throttle'].run(0)
         self.actuators['steering'].run(0)
-        rospy.loginfo("Setting actuators to idle")
 
     @property
     def is_controller_connected(self):
@@ -234,7 +236,7 @@ class TerabotLowLevelCtrl():
 
     def run(self):
 
-        #--- Set the control rate
+        # --- Set the control rate
         rate = rospy.Rate(10)
 
         while not rospy.is_shutdown():
@@ -244,6 +246,7 @@ class TerabotLowLevelCtrl():
 
             rate.sleep()
 
+
 if __name__ == "__main__":
-    llc     = TerabotLowLevelCtrl()
-    llc.run()        
+    llc = TerabotLowLevelCtrl()
+    llc.run()

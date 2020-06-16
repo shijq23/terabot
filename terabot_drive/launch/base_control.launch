@@ -1,6 +1,6 @@
 <launch>
     
-  <node pkg="terabot_drive" name="terabot_llc" type="base_control.py" output="screen" launch-prefix="sudo -E " >
+  <node pkg="terabot_drive" name="terabot_llc" type="base_control.py" output="screen" >
   </node>
 
 </launch>

@@ -10,19 +10,19 @@ import rospy
 # pip install adafruit-pca9685
 # pip install adafruit-gpio
 
+class SunFounder:
+    #STEERING
+    #used for the DRIVE_TRAIN_TYPE=SUNFOUNDER_PWM
+    STEERING_CHANNEL = 0            #channel on the 9685 pwm board 0-15
+    STEERING_LEFT_PWM = 260         #pwm value for full left steering
+    STEERING_RIGHT_PWM = 500        #pwm value for full right steering
 
-#STEERING
-#used for the DRIVE_TRAIN_TYPE=SUNFOUNDER_PWM
-STEERING_CHANNEL = 0            #channel on the 9685 pwm board 0-15
-STEERING_LEFT_PWM = 260         #pwm value for full left steering
-STEERING_RIGHT_PWM = 500        #pwm value for full right steering
-
-#THROTTLE
-#used for the DRIVE_TRAIN_TYPE=SUNFOUNDER_PWM
-THROTTLE_CHANNEL = 4            #channel on the 9685 pwm board 0-15
-THROTTLE_MAX_PWM = 1200         #pwm value for max movement (throttle ->= 1, -1)
-THROTTLE_MIN_PWM = 500          #pwm value for min movement (throttle -> 0)
-#THROTTLE_ZERO_PWM = 0          #pwm value for no movement (throttle = 0)
+    #THROTTLE
+    #used for the DRIVE_TRAIN_TYPE=SUNFOUNDER_PWM
+    THROTTLE_CHANNEL = 4            #channel on the 9685 pwm board 0-15
+    THROTTLE_MAX_PWM = 1200         #pwm value for max movement (throttle ->= 1, -1)
+    THROTTLE_MIN_PWM = 500          #pwm value for min movement (throttle -> 0)
+    #THROTTLE_ZERO_PWM = 0          #pwm value for no movement (throttle = 0)
 
 def map_range(x, X_min, X_max, Y_min, Y_max):
     ''' 
@@ -193,11 +193,11 @@ class TerabotLowLevelCtrl():
         rospy.init_node('terabot_llc')
 
         self.actuators = {}
-        self.actuators['throttle']  = SunFounder_Motor_Hat(max_pulse=THROTTLE_MAX_PWM, min_pulse=THROTTLE_MIN_PWM)
-        steering_controller = PCA9685(STEERING_CHANNEL)
+        self.actuators['throttle']  = SunFounder_Motor_Hat(max_pulse=SunFounder.THROTTLE_MAX_PWM, min_pulse=SunFounder.THROTTLE_MIN_PWM)
+        steering_controller = PCA9685(SunFounder.STEERING_CHANNEL)
         self.actuators['steering']  = PWMSteering(controller=steering_controller,
-                           left_pulse=STEERING_LEFT_PWM,
-                           right_pulse=STEERING_RIGHT_PWM)
+                           left_pulse=SunFounder.STEERING_LEFT_PWM,
+                           right_pulse=SunFounder.STEERING_RIGHT_PWM)
         rospy.loginfo("> Actuators initialized")
 
         #--- Create the Subscriber to Twist commands

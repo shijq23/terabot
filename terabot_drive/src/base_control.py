@@ -205,7 +205,7 @@ class TerabotLowLevelCtrl():
 
         # --- Create the Subscriber to Twist commands
         self.ros_sub_twist = rospy.Subscriber(
-            "mobile_base_controller/cmd_vel", Twist, self.set_actuators_from_cmdvel)
+            "mobile_base_controller/cmd_vel", Twist, self.set_actuators_from_cmdvel, queue_size=1)
 
         # --- Get the last time e got a commands
         self._last_time_cmd_rcv = time.time()
@@ -221,13 +221,18 @@ class TerabotLowLevelCtrl():
         # -- Convert vel into servo values
         self.actuators['throttle'].run(message.linear.x)
         self.actuators['steering'].run(message.angular.z)
-        rospy.loginfo("Got a command v = %2.1f  s = %2.1f" %
-                      (message.linear.x, message.angular.z))
+        #rospy.loginfo("Got a command v = %2.1f  s = %2.1f" %
+        #              (message.linear.x, message.angular.z))
 
     def set_actuators_idle(self):
         # -- Convert vel into servo values
         self.actuators['throttle'].run(0)
         self.actuators['steering'].run(0)
+
+    def shutdown(self):
+        # -- Convert vel into servo values
+        self.actuators['throttle'].shutdown()
+        self.actuators['steering'].shutdown()
 
     @property
     def is_controller_connected(self):
@@ -245,6 +250,7 @@ class TerabotLowLevelCtrl():
                 self.set_actuators_idle()
 
             rate.sleep()
+        self.shutdown()
 
 
 if __name__ == "__main__":

@@ -90,7 +90,7 @@ class PWMSteering:
         self.pulse = map_range(0, PWMSteering.LEFT_ANGLE, PWMSteering.RIGHT_ANGLE,
                                self.left_pulse, self.right_pulse)
         self.running = True
-        rospy.logdebug('PWM Steering created')
+        rospy.loginfo('PWM Steering created')
 
     def update(self):
         while self.running:
@@ -106,7 +106,7 @@ class PWMSteering:
         # set steering straight
         self.run(0)
         self.running = False
-        rospy.logdebug('PWM Steering shutdown')
+        rospy.loginfo('PWM Steering shutdown')
 
 
 class PWMThrottle:
@@ -142,7 +142,7 @@ class PWMThrottle:
         self.motor_b.set_pulse(0)
         self.throttle = 0
         self.pulse = 0
-        rospy.logdebug('PWM Throttle created')
+        rospy.loginfo('PWM Throttle created')
 
     def getPWM_throttle(self, throttle):
         """
@@ -182,6 +182,7 @@ class PWMThrottle:
             self.motor_a.set_pulse(pulse)
             self.motor_b.set_pulse(pulse)
             self.pulse = pulse
+        rospy.loginfo("Throttle, v {}, d {}, p {}".format(throttle, dir, pulse))
 
     def shutdown(self):
         self.motor_a.run(0)
@@ -189,7 +190,7 @@ class PWMThrottle:
         GPIO.output(PWMThrottle.Motor_A, GPIO.LOW)
         GPIO.output(PWMThrottle.Motor_B, GPIO.LOW)
         GPIO.cleanup()
-        rospy.logdebug('PWM Throttle shutdown')
+        rospy.loginfo('PWM Throttle shutdown')
 
 
 class TerabotLowLevelCtrl():
@@ -212,7 +213,7 @@ class TerabotLowLevelCtrl():
 
         # --- Get the last time e got a commands
         self._last_time_cmd_rcv = time.time()
-        self._timeout_s = 1
+        self._timeout_s = 2
 
     def set_actuators_from_cmdvel(self, message):
         """
@@ -224,8 +225,8 @@ class TerabotLowLevelCtrl():
         # -- Convert vel into servo values
         self.actuators['throttle'].run(message.linear.x)
         self.actuators['steering'].run(message.angular.z)
-        #rospy.loginfo("Got a command v = %2.1f  s = %2.1f" %
-        #              (message.linear.x, message.angular.z))
+        rospy.loginfo("Got a command v = %2.1f  w = %2.1f" %
+                      (message.linear.x, message.angular.z))
 
     def set_actuators_idle(self):
         # -- Convert vel into servo values
@@ -245,7 +246,7 @@ class TerabotLowLevelCtrl():
     def run(self):
 
         # --- Set the control rate
-        rate = rospy.Rate(10)
+        rate = rospy.Rate(5)
 
         while not rospy.is_shutdown():
             #rospy.loginfo("run %s %d" % (self._last_time_cmd_rcv, self.is_controller_connected))

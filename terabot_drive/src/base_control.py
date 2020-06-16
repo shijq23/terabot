@@ -106,9 +106,10 @@ class PWMSteering:
         # set steering straight
         self.run(0)
         self.running = False
+        rospy.logdebug('PWM Steering shutdown')
 
 
-class SunFounder_Motor_Hat:
+class PWMThrottle:
     """
     SunFounder DC Motor Controller.
     Used for each motor on a differential drive car.
@@ -129,18 +130,19 @@ class SunFounder_Motor_Hat:
         self.min_pulse = 500 if min_pulse == 0 else min_pulse
 
         GPIO.setmode(GPIO.BCM)
-        GPIO.setup(SunFounder_Motor_Hat.Motor_A, GPIO.OUT)
-        GPIO.setup(SunFounder_Motor_Hat.Motor_B, GPIO.OUT)
+        GPIO.setup(PWMThrottle.Motor_A, GPIO.OUT)
+        GPIO.setup(PWMThrottle.Motor_B, GPIO.OUT)
 
-        self.motor_a = PCA9685(SunFounder_Motor_Hat.PWM_A)
-        self.motor_b = PCA9685(SunFounder_Motor_Hat.PWM_B)
-        GPIO.output(SunFounder_Motor_Hat.Motor_A, SunFounder_Motor_Hat.FORWARD)
-        GPIO.output(SunFounder_Motor_Hat.Motor_B, SunFounder_Motor_Hat.FORWARD)
-        self.dir = SunFounder_Motor_Hat.FORWARD
+        self.motor_a = PCA9685(PWMThrottle.PWM_A)
+        self.motor_b = PCA9685(PWMThrottle.PWM_B)
+        GPIO.output(PWMThrottle.Motor_A, PWMThrottle.FORWARD)
+        GPIO.output(PWMThrottle.Motor_B, PWMThrottle.FORWARD)
+        self.dir = PWMThrottle.FORWARD
         self.motor_a.set_pulse(0)
         self.motor_b.set_pulse(0)
         self.throttle = 0
         self.pulse = 0
+        rospy.logdebug('PWM Throttle created')
 
     def getPWM_throttle(self, throttle):
         """
@@ -148,14 +150,14 @@ class SunFounder_Motor_Hat:
         -1 is full backwards, 0 is stop.
         """
         if throttle == 0:
-            direction = SunFounder_Motor_Hat.FORWARD
+            direction = PWMThrottle.FORWARD
             pulse = 0
         elif throttle > 0:
-            direction = SunFounder_Motor_Hat.FORWARD
+            direction = PWMThrottle.FORWARD
             pulse = int(map_range(throttle, 0, 1,
                                   self.min_pulse, self.max_pulse))
         else:
-            direction = SunFounder_Motor_Hat.BACKWARD
+            direction = PWMThrottle.BACKWARD
             pulse = int(map_range(throttle, -1, 0,
                                   self.max_pulse, self.min_pulse))
         return (direction, pulse)
@@ -173,8 +175,8 @@ class SunFounder_Motor_Hat:
         self.throttle = throttle
         dir, pulse = self.getPWM_throttle(throttle)
         if dir != self.dir:
-            GPIO.output(SunFounder_Motor_Hat.Motor_A, dir)
-            GPIO.output(SunFounder_Motor_Hat.Motor_B, dir)
+            GPIO.output(PWMThrottle.Motor_A, dir)
+            GPIO.output(PWMThrottle.Motor_B, dir)
             self.dir = dir
         if pulse != self.pulse:
             self.motor_a.set_pulse(pulse)
@@ -184,9 +186,10 @@ class SunFounder_Motor_Hat:
     def shutdown(self):
         self.motor_a.run(0)
         self.motor_b.run(0)
-        GPIO.output(SunFounder_Motor_Hat.Motor_A, GPIO.LOW)
-        GPIO.output(SunFounder_Motor_Hat.Motor_B, GPIO.LOW)
+        GPIO.output(PWMThrottle.Motor_A, GPIO.LOW)
+        GPIO.output(PWMThrottle.Motor_B, GPIO.LOW)
         GPIO.cleanup()
+        rospy.logdebug('PWM Throttle shutdown')
 
 
 class TerabotLowLevelCtrl():
@@ -196,7 +199,7 @@ class TerabotLowLevelCtrl():
         rospy.init_node('terabot_llc')
 
         self.actuators = {}
-        self.actuators['throttle'] = SunFounder_Motor_Hat(
+        self.actuators['throttle'] = PWMThrottle(
             max_pulse=SunFounder.THROTTLE_MAX_PWM, min_pulse=SunFounder.THROTTLE_MIN_PWM)
         steering_controller = PCA9685(SunFounder.STEERING_CHANNEL)
         self.actuators['steering'] = PWMSteering(controller=steering_controller,

@@ -69,14 +69,14 @@
   </node>
 
   <!--- Depth image to laser scan -->
-  <!--node pkg="depthimage_to_laserscan" type="depthimage_to_laserscan" name="depthimage_to_laserscan" >
+  <node pkg="depthimage_to_laserscan" type="depthimage_to_laserscan" name="depthimage_to_laserscan" >
     <param name="scan_height" value="1"/>
-    <param name="scan_time" value="0.033"/>
+    <param name="scan_time" value="0.0666667"/>
     <param name="range_min" value="0.2"/>
     <param name="range_max" value="10.0"/>
     <param name="output_frame_id" value="depth_camera"/>
-    <remap from="image" to="/terabot/depth1/depth/image_raw" />
-  </node-->
+    <remap from="image" to="/camera/depth/image_rect_raw" />
+  </node>
  <!-- Run RVIZ-->
   <node name="$(anon rviz)" pkg="rviz" type="rviz" args="-d $(find terabot_gazebo)/terabot.rviz" output="screen" required="true"/>
 

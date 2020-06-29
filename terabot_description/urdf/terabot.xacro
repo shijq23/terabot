@@ -96,6 +96,7 @@
       <material name="red"/>
     </visual-->
     <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
           <mesh filename="package://terabot_description/meshes/realsense_r200.dae" scale="2 2 2"/>
       </geometry>
@@ -147,16 +148,16 @@
 
   <!-- differential wheels -->
   <xacro:wheel prefix="front_left">
-   <origin xyz="${-wheelPos + chassisLength/2} ${wheelWidth/2+chassisWidth/2} ${wheelRadius}" rpy="0 0 0" /> 
+   <origin xyz="${-wheelPos + chassisLength/2} ${wheelWidth/2+chassisWidth/2} ${wheelRadius}" rpy="0 0 0" />
   </xacro:wheel>
   <xacro:wheel prefix="front_right">
-   <origin xyz="${-wheelPos + chassisLength/2} ${-wheelWidth/2-chassisWidth/2} ${wheelRadius}" rpy="0 0 0" /> 
+   <origin xyz="${-wheelPos + chassisLength/2} ${-wheelWidth/2-chassisWidth/2} ${wheelRadius}" rpy="0 0 0" />
   </xacro:wheel>
   <xacro:wheel prefix="back_left">
-   <origin xyz="${wheelPos -chassisLength/2} ${wheelWidth/2+chassisWidth/2} ${wheelRadius}" rpy="0 0 0" /> 
+   <origin xyz="${wheelPos -chassisLength/2} ${wheelWidth/2+chassisWidth/2} ${wheelRadius}" rpy="0 0 0" />
   </xacro:wheel>
   <xacro:wheel prefix="back_right">
-   <origin xyz="${wheelPos -chassisLength/2} ${-wheelWidth/2-chassisWidth/2} ${wheelRadius}" rpy="0 0 0" /> 
+   <origin xyz="${wheelPos -chassisLength/2} ${-wheelWidth/2-chassisWidth/2} ${wheelRadius}" rpy="0 0 0" />
   </xacro:wheel>
 
   <!-- camera -->
@@ -170,14 +171,14 @@
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-	<box size="${cameraSize} ${cameraSize} ${cameraSize}"/>
+	      <box size="${cameraSize} ${cameraSize} ${cameraSize}"/>
       </geometry>
     </collision>
 
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-	<box size="${cameraSize} ${cameraSize} ${cameraSize}"/>
+	      <box size="${cameraSize} ${cameraSize} ${cameraSize}"/>
       </geometry>
       <material name="blue"/>
     </visual>

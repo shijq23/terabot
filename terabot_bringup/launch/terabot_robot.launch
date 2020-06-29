@@ -1,0 +1,24 @@
+<launch>
+  <arg name="multi_robot_name" default=""/>
+  <arg name="set_lidar_frame_id" default="base_scan"/>
+
+  <param name="robot_description"
+	 command="$(find xacro)/xacro --inorder '$(find terabot_description)/urdf/terabot.xacro'" />
+
+  <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher">
+    <param name="publish_frequency" type="double" value="50.0" />
+    <param name="tf_prefix" value="$(arg multi_robot_name)"/>
+  </node>
+
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+  
+  <include file="$(find terabot_scan)/launch/d435i_scan.launch">
+  </include>
+
+  <include file="$(find terabot_scan)/launch/depth_laser.launch">
+  </include>
+
+  <include file="$(find terabot_drive)/launch/base_control.launch">
+  </include>
+ 
+</launch>

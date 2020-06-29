@@ -106,3 +106,7 @@ rosrun rqt_reconfigure rqt_reconfigure
 
 sudo apt-get install python-smbus i2c-tools
 sudo apt-get install libi2c-dev
+
+## interactive marker
+
+in rviz, add InteractiveMarkers, select Update topic: /twist_marker_server/update

@@ -10,6 +10,7 @@
   <!--node pkg="tf" type="static_transform_publisher" name="scanmatcher_to_base_footprint"
     args="0.0 0.0 0.0 0.0 0.0 0.0 /depth_camera  /scanmatcher_frame 100" /-->
 
+  <!-- if you see SearchDir angle change too large in the console, please reduce the angular speed, scale_angular=0.22-->
   <arg name="tf_map_scanmatch_transform_frame_name" default="scanmatcher_frame"/>
   <arg name="base_frame" default="base_link"/>
   <arg name="odom_frame" default="odom"/>
@@ -67,7 +68,7 @@
 
   </node>
 
-<node pkg="hector_trajectory_server" type="hector_trajectory_server" name="hector_trajectory_server" output="screen">
+  <node pkg="hector_trajectory_server" type="hector_trajectory_server" name="hector_trajectory_server" output="screen">
     <param name="target_frame_name" type="string" value="/map" />
     <param name="source_frame_name" type="string" value="/base_link" />
     <param name="trajectory_update_rate" type="double" value="4" />
@@ -81,6 +82,7 @@
     <param name="geotiff_save_period" type="double" value="60" />
     <param name="draw_background_checkerboard" type="bool" value="true" />
     <param name="draw_free_space_grid" type="bool" value="true" />
+    <param name="plugins" type="string" value="hector_geotiff_plugins/TrajectoryMapWriter" />
   </node>
 
   <node pkg="topic_tools" type="throttle" name="map_throttle" args="messages map 0.015 map_thottled" />

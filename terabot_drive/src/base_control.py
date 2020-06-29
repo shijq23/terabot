@@ -194,6 +194,8 @@ class PWMThrottle:
 
 
 class TerabotLowLevelCtrl():
+    STEERING_SCALE = -1.0
+
     def __init__(self):
         rospy.loginfo("Setting Up the Node...")
 
@@ -224,7 +226,7 @@ class TerabotLowLevelCtrl():
 
         # -- Convert vel into servo values
         self.actuators['throttle'].run(message.linear.x)
-        self.actuators['steering'].run(message.angular.z)
+        self.actuators['steering'].run(message.angular.z * TerabotLowLevelCtrl.STEERING_SCALE)
         rospy.loginfo("Got a command v = %2.1f  w = %2.1f" %
                       (message.linear.x, message.angular.z))
 

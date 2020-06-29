@@ -1,15 +1,24 @@
 # terabot
 
-A 4 wheel autonomous robot visual navigation by D435i.
+A 4 wheel autonomous robot with visual navigation by Intel RealSense D435i.
+
+![Terabot](./terabot-pic-480.jpg)
+
+## hardware
+
+* [Intel RealSense Depth Camera D435i](https://www.intelrealsense.com/depth-camera-d435i/)
+* [SunFounder Smart Video Car Kit V2.0/SunFounder PiCar V](https://www.sunfounder.com/smart-video-car-kit-v2-0.html)
+* [Raspberry Pi 3 model B+](https://www.raspberrypi.org/products/raspberry-pi-3-model-b-plus/)
+* [SONY DUALSHOCK 4 Wireless Controller for PS4](https://www.playstation.com/en-us/explore/accessories/gaming-controllers/dualshock-4/)
+
+## software environment
+
+* Ubuntu 18.04 LTS
+* ROS Melodic
 
 ## reference
 
 * [robotic simulation](https://www.generationrobots.com/blog/en/robotic-simulation-scenarios-with-gazebo-and-ros/)
-
-## environment
-
-* Ubuntu 18.04 LTS
-* ROS Melodic
 
 ## setup workspace
 
@@ -77,7 +86,8 @@ rosrun tf view_frames
 rosrun tf view_monitor
 roswtf
 ```
-# visualize the TF Tree
+
+## visualize the TF Tree
 
 ```bash
 rosrun rqt_tf_tree rqt_tf_tree

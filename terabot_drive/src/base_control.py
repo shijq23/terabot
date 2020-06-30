@@ -124,9 +124,9 @@ class PWMThrottle:
     BACKWARD = True
     MAX_FORWARD_VELOCITY = 0.22
     MAX_BACKWARD_VELOCITY = -0.22
-    T = 0.112 # Track (m)
-    R = 0.032 # wheel radius (m)
-    L = 0.142 # wheel base (m)
+    T = 0.112  # Track (m)
+    R = 0.032  # wheel radius (m)
+    L = 0.142  # wheel base (m)
 
     def __init__(self,
                  max_pulse=1200,
@@ -156,11 +156,11 @@ class PWMThrottle:
             v = throttle - angular * PWMThrottle.T / 2.0
         else:
             v = throttle + angular * PWMThrottle.T / 2.0
-        
-        if v > PWMThrottle.MAX_FORWARD_VELOCITY:
-            v = PWMThrottle.MAX_FORWARD_VELOCITY
-        elif v < PWMThrottle.MAX_BACKWARD_VELOCITY:
-            v = PWMThrottle.MAX_BACKWARD_VELOCITY
+
+        # if v > PWMThrottle.MAX_FORWARD_VELOCITY:
+        #     v = PWMThrottle.MAX_FORWARD_VELOCITY
+        # elif v < PWMThrottle.MAX_BACKWARD_VELOCITY:
+        #     v = PWMThrottle.MAX_BACKWARD_VELOCITY
 
         if v == 0:
             direction = PWMThrottle.FORWARD
@@ -183,12 +183,12 @@ class PWMThrottle:
         dir, pulse = self.getPWM_throttle(throttle, angular, True)
         GPIO.output(PWMThrottle.Motor_A, dir)
         self.motor_a.set_pulse(pulse)
-        rospy.loginfo("Left Throttle, v {}, d {}, p {}".format(throttle, dir, pulse))
+        #rospy.loginfo("Left Throttle, v {}, d {}, p {}".format(throttle, dir, pulse))
 
         dir, pulse = self.getPWM_throttle(throttle, angular, False)
         GPIO.output(PWMThrottle.Motor_B, dir)
         self.motor_b.set_pulse(pulse)
-        rospy.loginfo("Right Throttle, v {}, d {}, p {}".format(throttle, dir, pulse))
+        #rospy.loginfo("Right Throttle, v {}, d {}, p {}".format(throttle, dir, pulse))
 
     def shutdown(self):
         self.motor_a.run(0)

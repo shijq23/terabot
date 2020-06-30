@@ -7,7 +7,7 @@
 
   <xacro:property name="chassisHeight" value="0.04"/>
   <xacro:property name="chassisLength" value="0.23"/>
-  <xacro:property name="chassisWidth" value="0.08"/>
+  <xacro:property name="chassisWidth" value="0.09"/>
   <xacro:property name="chassisMass" value="1.5"/>
 
   <xacro:property name="casterRadius" value="0.026"/>
@@ -15,7 +15,7 @@
 
   <xacro:property name="wheelWidth" value="0.027"/>
   <xacro:property name="wheelRadius" value="0.032"/>
-  <xacro:property name="wheelPos" value="0.01"/>
+  <xacro:property name="wheelPos" value="0.03"/>
   <xacro:property name="wheelMass" value="0.1"/>
 
   <xacro:property name="cameraSize" value="0.02"/>
@@ -36,14 +36,14 @@
     <collision>
       <origin xyz="0 0 ${wheelRadius}" rpy="0 0 0" />
       <geometry>
-	<box size="${chassisLength} ${chassisWidth + wheelWidth*2} ${chassisHeight+wheelRadius}"/>
+	      <box size="${chassisLength} ${chassisWidth + wheelWidth*2} ${chassisHeight+wheelRadius}"/>
       </geometry>
     </collision>
 
     <visual>
       <origin xyz="0 0 ${wheelRadius}" rpy="0 0 0"/>
       <geometry>
-	<box size="${chassisLength} ${chassisWidth} ${chassisHeight}"/>
+	      <box size="${chassisLength} ${chassisWidth} ${chassisHeight}"/>
       </geometry>
       <material name="orange"/>
     </visual>
@@ -81,12 +81,12 @@
   </joint>
 
   <link name="depth_camera">
-    <collision>
+    <!--collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-	<box size="${cameraSize} ${cameraSize} ${cameraSize}"/>
+	      <box size="${cameraSize} ${cameraSize} ${cameraSize}"/>
       </geometry>
-    </collision>
+    </collision-->
 
     <!--visual>
       <origin xyz="0 0 0" rpy="0 0 0"/>
@@ -96,17 +96,17 @@
       <material name="red"/>
     </visual-->
     <visual>
-      <origin xyz="${chassisLength/2-0.1} 0 ${depthCameraJointHeight+wheelRadius+chassisHeight/2}" rpy="0 0 0"/>
+      <origin xyz="0 0 0" rpy="${PI/2} 0 ${PI/2}"/>
       <geometry>
-          <mesh filename="package://terabot_description/meshes/realsense_r200.dae" scale="2 2 2"/>
+          <mesh filename="package://terabot_description/meshes/d435.dae" scale="1 1 1"/>
       </geometry>
     </visual>
 
-    <inertial>
+    <!--inertial>
       <mass value="${cameraMass}" />
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <xacro:box_inertia m="${cameraMass}" x="${cameraSize}" y="${cameraSize}" z="${cameraSize}" />
-    </inertial>
+    </inertial-->
   </link>
 
   <joint name="depth_camera_optical_joint" type="fixed">
@@ -183,11 +183,11 @@
       <material name="blue"/>
     </visual>
 
-    <inertial>
+    <!--inertial>
       <mass value="${cameraMass}" />
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <xacro:box_inertia m="${cameraMass}" x="${cameraSize}" y="${cameraSize}" z="${cameraSize}" />
-    </inertial>
+    </inertial-->
   </link>
 
   <!-- imu -->

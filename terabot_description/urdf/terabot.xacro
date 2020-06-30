@@ -96,7 +96,7 @@
       <material name="red"/>
     </visual-->
     <visual>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <origin xyz="${chassisLength/2-0.1} 0 ${depthCameraJointHeight+wheelRadius+chassisHeight/2}" rpy="0 0 0"/>
       <geometry>
           <mesh filename="package://terabot_description/meshes/realsense_r200.dae" scale="2 2 2"/>
       </geometry>

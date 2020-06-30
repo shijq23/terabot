@@ -6,6 +6,7 @@ import RPi.GPIO as GPIO
 from Adafruit_GPIO import I2C
 import rospy
 from geometry_msgs.msg import Twist
+import math
 
 # sudo apt install RPi.GPIO
 # pip install adafruit-pca9685
@@ -76,8 +77,8 @@ class PWMSteering:
     """
     Wrapper over a PWM motor controller to convert angles to PWM pulses.
     """
-    LEFT_ANGLE = -1
-    RIGHT_ANGLE = 1
+    LEFT_ANGLE = - math.pi / 4.0
+    RIGHT_ANGLE = math.pi / 4.0
 
     def __init__(self,
                  controller=None,
@@ -115,12 +116,17 @@ class PWMThrottle:
     Used for each motor on a differential drive car.
     SunFounder Smart Video Car Kit V2.0/SunFounder PiCar V.
     """
-    Motor_A = 17  # GPIO pin for motor a
-    Motor_B = 27  # GPIO pin for motor b
+    Motor_A = 17  # GPIO pin for motor a left
+    Motor_B = 27  # GPIO pin for motor b right
     PWM_A = 4  # pwm channel for motor a
     PWM_B = 5  # pwm channel for motor b
     FORWARD = False
     BACKWARD = True
+    MAX_FORWARD_VELOCITY = 0.22
+    MAX_BACKWARD_VELOCITY = -0.22
+    T = 0.112 # Track (m)
+    R = 0.032 # wheel radius (m)
+    L = 0.142 # wheel base (m)
 
     def __init__(self,
                  max_pulse=1200,
@@ -137,52 +143,52 @@ class PWMThrottle:
         self.motor_b = PCA9685(PWMThrottle.PWM_B)
         GPIO.output(PWMThrottle.Motor_A, PWMThrottle.FORWARD)
         GPIO.output(PWMThrottle.Motor_B, PWMThrottle.FORWARD)
-        self.dir = PWMThrottle.FORWARD
         self.motor_a.set_pulse(0)
         self.motor_b.set_pulse(0)
-        self.throttle = 0
-        self.pulse = 0
         rospy.loginfo('PWM Throttle created')
 
-    def getPWM_throttle(self, throttle):
+    def getPWM_throttle(self, throttle, angular, isLeft):
         """
         Calculate the PWM pulse value from throttle, where 1 is full forward and
-        -1 is full backwards, 0 is stop.
+        -1 is full backwards, 0 is stop. apply differential drive.
         """
-        if throttle == 0:
+        if isLeft:
+            v = throttle - angular * PWMThrottle.T / 2.0
+        else:
+            v = throttle + angular * PWMThrottle.T / 2.0
+        
+        if v > PWMThrottle.MAX_FORWARD_VELOCITY:
+            v = PWMThrottle.MAX_FORWARD_VELOCITY
+        elif v < PWMThrottle.MAX_BACKWARD_VELOCITY:
+            v = PWMThrottle.MAX_BACKWARD_VELOCITY
+
+        if v == 0:
             direction = PWMThrottle.FORWARD
             pulse = 0
-        elif throttle > 0:
+        elif v > 0:
             direction = PWMThrottle.FORWARD
-            pulse = int(map_range(throttle, 0, 1,
+            pulse = int(map_range(v, 0, PWMThrottle.MAX_FORWARD_VELOCITY,
                                   self.min_pulse, self.max_pulse))
         else:
             direction = PWMThrottle.BACKWARD
-            pulse = int(map_range(throttle, -1, 0,
+            pulse = int(map_range(v, PWMThrottle.MAX_BACKWARD_VELOCITY, 0,
                                   self.max_pulse, self.min_pulse))
         return (direction, pulse)
 
-    def run(self, throttle):
+    def run(self, throttle, angular):
         """
         Update the throttle of the motor where 1 is full forward and
         -1 is full backwards.
         """
-        if throttle > 1 or throttle < -1:
-            raise ValueError(
-                "throttle must be between 1(forward) and -1(reverse), but {}".format(throttle))
-        if self.throttle == throttle:
-            return
-        self.throttle = throttle
-        dir, pulse = self.getPWM_throttle(throttle)
-        if dir != self.dir:
-            GPIO.output(PWMThrottle.Motor_A, dir)
-            GPIO.output(PWMThrottle.Motor_B, dir)
-            self.dir = dir
-        if pulse != self.pulse:
-            self.motor_a.set_pulse(pulse)
-            self.motor_b.set_pulse(pulse)
-            self.pulse = pulse
-        rospy.loginfo("Throttle, v {}, d {}, p {}".format(throttle, dir, pulse))
+        dir, pulse = self.getPWM_throttle(throttle, angular, True)
+        GPIO.output(PWMThrottle.Motor_A, dir)
+        self.motor_a.set_pulse(pulse)
+        rospy.loginfo("Left Throttle, v {}, d {}, p {}".format(throttle, dir, pulse))
+
+        dir, pulse = self.getPWM_throttle(throttle, angular, False)
+        GPIO.output(PWMThrottle.Motor_B, dir)
+        self.motor_b.set_pulse(pulse)
+        rospy.loginfo("Right Throttle, v {}, d {}, p {}".format(throttle, dir, pulse))
 
     def shutdown(self):
         self.motor_a.run(0)
@@ -225,14 +231,15 @@ class TerabotLowLevelCtrl():
         self._last_time_cmd_rcv = time.time()
 
         # -- Convert vel into servo values
-        self.actuators['throttle'].run(message.linear.x)
-        self.actuators['steering'].run(message.angular.z * TerabotLowLevelCtrl.STEERING_SCALE)
+        angluar = message.angular.z * TerabotLowLevelCtrl.STEERING_SCALE
+        self.actuators['throttle'].run(message.linear.x, message.angular.z)
+        self.actuators['steering'].run(angluar)
         rospy.loginfo("Got a command v = %2.1f  w = %2.1f" %
                       (message.linear.x, message.angular.z))
 
     def set_actuators_idle(self):
         # -- Convert vel into servo values
-        self.actuators['throttle'].run(0)
+        self.actuators['throttle'].run(0, 0)
         self.actuators['steering'].run(0)
 
     def shutdown(self):

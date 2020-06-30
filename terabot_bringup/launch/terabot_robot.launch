@@ -20,5 +20,12 @@
 
   <include file="$(find terabot_drive)/launch/base_control.launch">
   </include>
+
+    <!-- Start EKF for localization -->
+  <node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization">
+    <rosparam command="load" file="$(find terabot_bringup)/config/localization.yaml" />
+  </node>
+
+  <!--node pkg="tf" type="static_transform_publisher" name="map_2_odom" args="0 0 0 0 0 0 /map /odom 100"/-->
  
 </launch>

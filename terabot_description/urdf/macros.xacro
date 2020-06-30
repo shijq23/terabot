@@ -21,12 +21,12 @@
   <xacro:macro name="wheel" params="prefix *joint_pose">
 
     <link name="${prefix}_wheel">
-      <collision>
+      <!--collision>
         <origin xyz="0 0 0" rpy="0 ${PI/2} ${PI/2}" />
         <geometry>
           <cylinder length="${wheelWidth}" radius="${wheelRadius}"/>
         </geometry>
-      </collision>
+      </collision-->
 
       <visual>
         <origin xyz="0 0 0" rpy="0 ${PI/2} ${PI/2}" />

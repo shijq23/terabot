@@ -37,6 +37,7 @@
       <remap from="rgbd_image" to="rgbd_image"/>
     </node>
 
-
+    <include file="$(find terabot_drive)/launch/base_control.launch">
+    </include>
   </group>
 </launch>

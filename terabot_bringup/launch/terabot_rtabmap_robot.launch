@@ -4,6 +4,11 @@
     <include file="$(find realsense2_camera)/launch/rs_camera.launch">
       <arg name="align_depth" value="true"/>
       <arg name="unite_imu_method" value="linear_interpolation" />
+      <arg name="depth_fps"           value="15"/>
+      <arg name="infra_fps"           value="15"/>
+      <arg name="color_fps"           value="15"/>
+      <arg name="gyro_fps"            value="400"/>
+      <arg name="accel_fps"           value="250"/>
     </include>
 
     <!-- imu -->

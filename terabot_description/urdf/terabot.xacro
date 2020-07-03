@@ -9,6 +9,7 @@
   <xacro:property name="chassisLength" value="0.23"/>
   <xacro:property name="chassisWidth" value="0.09"/>
   <xacro:property name="chassisMass" value="1.5"/>
+  <xacro:property name="chassisLift" value="0.01"/>
 
   <xacro:property name="casterRadius" value="0.026"/>
   <xacro:property name="casterMass" value="0.005"/>
@@ -77,10 +78,10 @@
   <joint name="depth_camera_joint" type="fixed">
     <origin xyz="${chassisLength/2-0.1} 0 ${depthCameraJointHeight+wheelRadius+chassisHeight/2}" rpy="0 0 0"/>
     <parent link="base_link"/>
-    <child link="depth_camera"/>
+    <child link="camera_link"/>
   </joint>
 
-  <link name="depth_camera">
+  <link name="camera_link">
     <!--collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
@@ -111,7 +112,7 @@
 
   <joint name="depth_camera_optical_joint" type="fixed">
     <origin xyz="0 0 0" rpy="${-PI/2} 0 ${-PI/2}"/>
-    <parent link="depth_camera"/>
+    <parent link="camera_link"/>
     <child link="depth_camera_frame_optical"/>
   </joint>
 
@@ -169,14 +170,12 @@
 
   <link name="camera">
     <collision>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
 	      <box size="${cameraSize} ${cameraSize} ${cameraSize}"/>
       </geometry>
     </collision>
 
     <visual>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
 	      <box size="${cameraSize} ${cameraSize} ${cameraSize}"/>
       </geometry>

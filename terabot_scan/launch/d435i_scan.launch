@@ -110,19 +110,19 @@
       <arg name="allow_no_texture_points"  value="$(arg allow_no_texture_points)"/>
 
       <arg name="base_frame_id"             value="base_link"/>
-      <arg name="depth_frame_id"            value="depth_camera"/>
-      <arg name="color_frame_id"            value="depth_camera"/>
-      <arg name="accel_frame_id"            value="imu_link"/>
-      <arg name="gyro_frame_id"             value="imu_link"/>
+      <arg name="depth_frame_id"            value="camera_link"/>
+      <arg name="color_frame_id"            value="camera_link"/>
+      <arg name="accel_frame_id"            value="camera_link"/>
+      <arg name="gyro_frame_id"             value="camera_link"/>
  
       <arg name="depth_optical_frame_id"    value="depth_camera_frame_optical"/>
       <arg name="color_optical_frame_id"    value="depth_camera_frame_optical"/>
-      <arg name="accel_optical_frame_id"    value="imu_link_frame_optical"/>
-      <arg name="gyro_optical_frame_id"     value="imu_link_frame_optical"/>
-      <arg name="imu_optical_frame_id"      value="imu_link_frame_optical"/>
+      <arg name="accel_optical_frame_id"    value="depth_camera_frame_optical"/>
+      <arg name="gyro_optical_frame_id"     value="depth_camera_frame_optical"/>
+      <arg name="imu_optical_frame_id"      value="depth_camera_frame_optical"/>
       <arg name="pose_optical_frame_id"     value="base_link"/>
 
-      <arg name="aligned_depth_to_color_frame_id"    default="depth_camera_frame_optical"/>
+      <arg name="aligned_depth_to_color_frame_id"    default="camera_link_frame_optical"/>
     </include>
   </group>
 </launch>

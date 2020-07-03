@@ -1,6 +1,5 @@
 <launch>
   <!-- run on terabot robot, assume this is ros master -->
-  <group ns="rtabmap">
     <!-- depth camera -->
     <include file="$(find realsense2_camera)/launch/rs_camera.launch">
       <arg name="align_depth" value="true"/>
@@ -23,7 +22,7 @@
       <remap from="rgb/image"        to="/camera/color/image_raw"/>
       <remap from="depth/image"      to="/camera/aligned_depth_to_color/image_raw"/>
       <remap from="rgb/camera_info"  to="/camera/color/camera_info"/>
-      <remap from="rgbd_image"       to="rgbd_image"/> <!-- output -->
+      <remap from="rgbd_image"       to="/camera/rgbd_image"/> <!-- output -->
       
       <!-- Should be true for not synchronized camera topics 
            (e.g., false for kinectv2, zed, realsense, true for xtion, kinect360)-->
@@ -34,10 +33,9 @@
     <node pkg="rtabmap_ros" type="rgbd_odometry" name="rgbd_odometry" output="screen">
       <param name="subscribe_rgbd" type="bool"   value="true"/>
       <param name="frame_id"       type="string" value="base_link"/>
-      <remap from="rgbd_image" to="rgbd_image"/>
+      <remap from="rgbd_image" to="/camera/rgbd_image"/>
     </node>
 
     <include file="$(find terabot_drive)/launch/base_control.launch">
     </include>
-  </group>
 </launch>

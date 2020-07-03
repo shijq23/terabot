@@ -1,7 +1,12 @@
 <launch>
+  <arg name="rgb_topic"         default="/camera/color/image_raw"/>
+  <arg name="depth_topic"       default="/camera/aligned_depth_to_color/image_raw"/>
+  <arg name="camera_info_topic" default="/camera/color/camera_info"/>
+  <arg name="wait_for_transform"  default="0.2"/> 
+      
   <!-- run on terabot robot, assume this is ros master -->
     <!-- depth camera -->
-    <include file="$(find realsense2_camera)/launch/rs_camera.launch">
+    <include file="$(find terabot_scan/launch/d435i.launch">
       <arg name="align_depth" value="true"/>
       <arg name="unite_imu_method" value="linear_interpolation" />
       <arg name="depth_fps"           value="15"/>
@@ -31,12 +36,12 @@
     </node>
 
     <!-- rgbd_sync -->
-    <node pkg="nodelet" type="nodelet" name="rgbd_sync" args="standalone rtabmap_ros/rgbd_sync" output="screen">
-      <param name="compressed_rate"  type="double" value="10"/>
-      <remap from="rgb/image"        to="/camera/color/image_raw"/>
-      <remap from="depth/image"      to="/camera/aligned_depth_to_color/image_raw"/>
-      <remap from="rgb/camera_info"  to="/camera/color/camera_info"/>
-      <remap from="rgbd_image"       to="/camera/rgbd_image"/> <!-- output -->
+    <node if="false" pkg="nodelet" type="nodelet" name="rgbd_sync" args="standalone rtabmap_ros/rgbd_sync" output="screen">
+      <param name="compressed_rate" type="double" value="10"/>
+      <remap from="rgb/image"       to="$(arg rgb_topic)"/>
+      <remap from="depth/image"     to="$(arg depth_topic)"/>
+      <remap from="rgb/camera_info" to="$(arg camera_info_topic)"/>
+      <remap from="rgbd_image"      to="/camera/rgbd_image"/> <!-- output -->
       
       <!-- Should be true for not synchronized camera topics 
            (e.g., false for kinectv2, zed, realsense, true for xtion, kinect360)-->
@@ -45,9 +50,15 @@
 
     <!-- Odometry -->
     <node pkg="rtabmap_ros" type="rgbd_odometry" name="rgbd_odometry" output="screen">
-      <param name="subscribe_rgbd" type="bool"   value="true"/>
+      <!--param name="subscribe_rgbd" type="bool"   value="true"/>
       <param name="frame_id"       type="string" value="base_link"/>
-      <remap from="rgbd_image" to="/camera/rgbd_image"/>
+      <remap from="rgbd_image" to="/camera/rgbd_image"/-->
+      <param name="frame_id"                    type="string" value="base_link"/>
+      <param name="wait_for_transform_duration" type="double" value="$(arg wait_for_transform)"/>
+
+      <remap from="rgb/image"       to="$(arg rgb_topic)"/>
+      <remap from="depth/image"     to="$(arg depth_topic)"/>
+      <remap from="rgb/camera_info" to="$(arg camera_info_topic)"/>
     </node>
 
     <include file="$(find terabot_drive)/launch/base_control.launch">

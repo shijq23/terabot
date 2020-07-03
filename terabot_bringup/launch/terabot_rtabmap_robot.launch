@@ -6,23 +6,9 @@
       
   <!-- run on terabot robot, assume this is ros master -->
     <!-- depth camera -->
-    <include file="$(find terabot_scan/launch/d435i.launch">
+    <include file="$(find terabot_scan)/launch/d435i_scan.launch">
       <arg name="align_depth" value="true"/>
       <arg name="unite_imu_method" value="linear_interpolation" />
-      <arg name="depth_fps"           value="15"/>
-      <arg name="infra_fps"           value="15"/>
-      <arg name="color_fps"           value="15"/>
-      <arg name="gyro_fps"            value="400"/>
-      <arg name="accel_fps"           value="250"/>
-      
-      <arg name="base_frame_id"             value="base_link"/>
-      <arg name="depth_frame_id"            value="depth_camera"/>
-      <arg name="color_frame_id"            value="depth_camera"/>
-      <arg name="depth_optical_frame_id"    value="depth_camera_frame_optical"/>
-      <arg name="color_optical_frame_id"    value="depth_camera_frame_optical"/>
-      <arg name="accel_optical_frame_id"    value="imu_link_frame_optical"/>
-      <arg name="gyro_optical_frame_id"     value="imu_link_frame_optical"/>
-      <arg name="imu_optical_frame_id"      value="imu_link_frame_optical"/>
     </include>
 
     <!-- imu -->

@@ -2,6 +2,8 @@
   <arg name="serial_no"             default=""/>
   <arg name="json_file_path"        default=""/>
   <arg name="camera"                default="camera"/>
+  <arg name="align_depth"           default="true"/>
+  <arg name="unite_imu_method"      default="linear_interpolation" />
 
   <group ns="$(arg camera)">
     <include file="$(find realsense2_camera)/launch/includes/nodelet.launch.xml">
@@ -20,9 +22,14 @@
       <arg name="enable_fisheye"    value="false"/>
       <arg name="enable_gyro"       value="true"/>
       <arg name="enable_accel"      value="true"/>
+      <arg name="gyro_fps"          value="400"/>
+      <arg name="accel_fps"         value="250"/>
       <arg name="enable_pointcloud" value="true"/>
       <arg name="enable_sync"       value="true"/>
       <arg name="tf_prefix"         value="$(arg camera)"/>
+
+      <arg name="align_depth"           default="$(arg align_depth)"/>
+      <arg name="unite_imu_method"      default="$(arg unite_imu_method)" />
 
       <arg name="base_frame_id"             value="base_link"/>
       <arg name="depth_frame_id"            value="depth_camera"/>

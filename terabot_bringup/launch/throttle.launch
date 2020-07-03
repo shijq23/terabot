@@ -1,0 +1,36 @@
+<launch>
+  <!-- run this on robot -->
+  <include file="$(find terabot_bringup)/launch/test.launch">
+  </include>
+
+  <arg name="rate"  default="5"/>
+  <arg name="approx_sync" default="false" />
+  <arg name="rgbd_sync" default="true"/>
+
+  <!-- Use same nodelet used by Freenect/OpenNI -->
+  <group ns="camera">
+    <node if="$(arg rgbd_sync)" pkg="nodelet" type="nodelet" name="rgbd_sync" args="load rtabmap_ros/rgbd_sync camera_nodelet_manager" output="screen">
+      <param name="compressed_rate"  type="double" value="$(arg rate)"/>
+      <param name="approx_sync"      type="bool"   value="$(arg approx_sync)"/>
+
+      <remap from="rgb/image"       to="/camera/color/image_raw"/>
+      <remap from="depth/image"     to="/camera/aligned_depth_to_color/image_raw"/>
+      <remap from="rgb/camera_info" to="/camera/color/camera_info"/>
+
+      <remap from="rgbd_image"      to="rgbd_image"/>
+    </node>
+
+    <node unless="$(arg rgbd_sync)" pkg="nodelet" type="nodelet" name="data_throttle" args="load rtabmap_ros/data_throttle camera_nodelet_manager" output="screen">
+      <param name="rate"         type="double" value="$(arg rate)"/>
+      <param name="approx_sync"  type="bool"   value="$(arg approx_sync)"/>
+
+      <remap from="rgb/image_in"       to="rgb/image_rect_color"/>
+      <remap from="depth/image_in"     to="depth_registered/image_raw"/>
+      <remap from="rgb/camera_info_in" to="rgb/camera_info"/>
+
+      <remap from="rgb/image_out"       to="throttled/rgb/image_rect_color"/>
+      <remap from="depth/image_out"     to="throttled/depth_registered/image_raw"/>
+      <remap from="rgb/camera_info_out" to="throttled/rgb/camera_info"/>
+    </node>
+  </group>
+</launch>

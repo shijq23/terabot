@@ -38,10 +38,10 @@
   <arg name="pointcloud_texture_stream" default="RS2_STREAM_COLOR"/>
   <arg name="pointcloud_texture_index"  default="0"/>
 
-  <arg name="enable_sync"               default="false"/>
+  <arg name="enable_sync"               default="true"/>
   <arg name="align_depth"               default="false"/>
 
-  <arg name="publish_tf"                default="true"/>
+  <arg name="publish_tf"                default="false"/>
   <arg name="tf_publish_rate"           default="0"/>
 
   <arg name="filters"                   default=""/>
@@ -51,7 +51,7 @@
   <arg name="unite_imu_method"          default=""/>
   <arg name="topic_odom_in"             default="odom_in"/>
   <arg name="calib_odom_file"           default=""/>
-  <arg name="publish_odom_tf"           default="true"/>
+  <arg name="publish_odom_tf"           default="false"/>
   <arg name="allow_no_texture_points"   default="false"/>
 
   <group ns="$(arg camera)">
@@ -122,7 +122,7 @@
       <arg name="imu_optical_frame_id"      value="depth_camera_frame_optical"/>
       <arg name="pose_optical_frame_id"     value="base_link"/>
 
-      <arg name="aligned_depth_to_color_frame_id"    default="camera_link_frame_optical"/>
+      <arg name="aligned_depth_to_color_frame_id"    default="depth_camera_frame_optical"/>
     </include>
   </group>
 </launch>

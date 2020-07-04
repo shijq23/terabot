@@ -126,3 +126,11 @@ in rviz, add InteractiveMarkers, select Update topic: /twist_marker_server/updat
 ```bash
 rosrun rtabmap_ros rgbd_odometry --params
 ```
+
+## print tf
+
+```bash
+rostopic echo /tf_static
+rosrun tf tf_echo /base_link /depth_camera_frame_optical
+rosrun tf tf_monitor /base_link /depth_camera_frame_optical
+```

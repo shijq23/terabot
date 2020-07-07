@@ -23,9 +23,9 @@
     <remap from="/imu/data" to="/rtabmap/imu"/> <!-- output -->
   </node>
 
-  <!-- rgbd_sync -->
-  <node pkg="nodelet" type="nodelet" name="rgbd_sync" args="standalone rtabmap_ros/rgbd_sync" output="screen">
-    <!--param name="compressed_rate" type="double" value="10"/-->
+  <!-- rgbd_sync use same nodelet to avoid image serialization -->
+  <node pkg="nodelet" type="nodelet" name="rgbd_sync" args="load rtabmap_ros/rgbd_sync realsense2_camera_manager" output="screen">
+    <param name="compressed_rate" type="double" value="10"/>
     <remap from="rgb/image" to="$(arg rgb_topic)"/>
     <remap from="depth/image" to="$(arg depth_topic)"/>
     <remap from="rgb/camera_info" to="$(arg camera_info_topic)"/>
@@ -34,20 +34,6 @@
     <!-- Should be true for not synchronized camera topics 
            (e.g., false for kinectv2, zed, realsense, true for xtion, kinect360)-->
     <param name="approx_sync" value="false"/>
-  </node>
-
-  <!-- Odometry -->
-  <node pkg="rtabmap_ros" type="rgbd_odometry" name="rgbd_odometry" output="screen">
-    <param name="subscribe_rgbd" type="bool" value="true"/>
-    <param name="frame_id" type="string" value="base_link"/>
-    <remap from="rgbd_image" to="/rtabmap/rgbd_image"/>
-    <param name="frame_id" type="string" value="base_link"/>
-    <param name="wait_for_transform_duration" type="double" value="$(arg wait_for_transform)"/>
-    <param name="Reg/Force3DoF" value="true" />
-    <!--param name="queue_size" type="int" value="50" /-->
-    <!--remap from="rgb/image" to="$(arg rgb_topic)"/>
-      <remap from="depth/image" to="$(arg depth_topic)"/>
-      <remap from="rgb/camera_info" to="$(arg camera_info_topic)"/-->
   </node>
 
   <include file="$(find terabot_drive)/launch/base_control.launch">

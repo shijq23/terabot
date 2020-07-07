@@ -1,55 +1,56 @@
 <launch>
-  <arg name="rgb_topic"         default="/camera/color/image_raw"/>
-  <arg name="depth_topic"       default="/camera/aligned_depth_to_color/image_raw"/>
+  <arg name="rgb_topic" default="/camera/color/image_raw"/>
+  <arg name="depth_topic" default="/camera/aligned_depth_to_color/image_raw"/>
   <arg name="camera_info_topic" default="/camera/color/camera_info"/>
-  <arg name="wait_for_transform"  default="0.2"/>
-      
+  <arg name="wait_for_transform" default="0.2"/>
+
   <!-- run on terabot robot, assume this is ros master -->
-    <node pkg="tf" type="static_transform_publisher" name="depth_camera_1" args="-0.000 0.202 -0.015 0.500 -0.500 0.500 0.500 depth_camera_frame_optical base_link 100" />
-    <node pkg="tf" type="static_transform_publisher" name="depth_camera_2" args="0.0 0.0 0.0 0.500 -0.500 0.500 0.500 depth_camera_frame_optical camera_link 100" />
-    <!-- depth camera -->
-    <include file="$(find terabot_scan)/launch/d435i_scan.launch">
-      <arg name="align_depth" value="true"/>
-      <arg name="unite_imu_method" value="linear_interpolation" />
-    </include>
+  <!--node pkg="tf" type="static_transform_publisher" name="depth_camera_1" args="-0.000 0.202 -0.015 0.500 -0.500 0.500 0.500 depth_camera_frame_optical base_link 100" />
+  <node pkg="tf" type="static_transform_publisher" name="depth_camera_2" args="0.0 0.0 0.0 0.500 -0.500 0.500 0.500 depth_camera_frame_optical camera_link 100" /-->
+  <!-- depth camera -->
+  <include file="$(find terabot_scan)/launch/d435i_scan_rtabmap.launch">
+    <arg name="align_depth" value="true"/>
+    <arg name="unite_imu_method" value="linear_interpolation" />
+  </include>
 
-    <!-- imu -->
-    <node pkg="imu_filter_madgwick" type="imu_filter_node" name="imu_filter" output="screen">
-      <param name="fixed_frame" value="odom" />
-      <param name="use_mag" value="false" />
-      <param name="publish_tf" value="false" />
-      <param name="world_frame" value="enu" />
-      <remap from="/imu/data_raw" to="/camera/imu"/>
-      <remap from="/imu/data" to="/rtabmap/imu"/>
-    </node>
+  <!-- imu -->
+  <node pkg="imu_filter_madgwick" type="imu_filter_node" name="imu_filter" output="screen">
+    <param name="fixed_frame" value="odom" />
+    <param name="use_mag" value="false" />
+    <param name="publish_tf" value="false" />
+    <param name="world_frame" value="enu" />
+    <remap from="/imu/data_raw" to="/camera/imu"/>
+    <remap from="/imu/data" to="/rtabmap/imu"/> <!-- output -->
+  </node>
 
-    <!-- rgbd_sync -->
-    <node if="false" pkg="nodelet" type="nodelet" name="rgbd_sync" args="standalone rtabmap_ros/rgbd_sync" output="screen">
-      <param name="compressed_rate" type="double" value="10"/>
-      <remap from="rgb/image"       to="$(arg rgb_topic)"/>
-      <remap from="depth/image"     to="$(arg depth_topic)"/>
-      <remap from="rgb/camera_info" to="$(arg camera_info_topic)"/>
-      <remap from="rgbd_image"      to="/camera/rgbd_image"/> <!-- output -->
-      
-      <!-- Should be true for not synchronized camera topics 
+  <!-- rgbd_sync -->
+  <node pkg="nodelet" type="nodelet" name="rgbd_sync" args="standalone rtabmap_ros/rgbd_sync" output="screen">
+    <!--param name="compressed_rate" type="double" value="10"/-->
+    <remap from="rgb/image" to="$(arg rgb_topic)"/>
+    <remap from="depth/image" to="$(arg depth_topic)"/>
+    <remap from="rgb/camera_info" to="$(arg camera_info_topic)"/>
+    <remap from="rgbd_image" to="/rtabmap/rgbd_image"/> <!-- output -->
+
+    <!-- Should be true for not synchronized camera topics 
            (e.g., false for kinectv2, zed, realsense, true for xtion, kinect360)-->
-      <param name="approx_sync"       value="false"/> 
-    </node>
+    <param name="approx_sync" value="false"/>
+  </node>
 
-    <!-- Odometry -->
-    <node pkg="rtabmap_ros" type="rgbd_odometry" name="rgbd_odometry" output="screen">
-      <!--param name="subscribe_rgbd" type="bool"   value="true"/>
-      <param name="frame_id"       type="string" value="base_link"/>
-      <remap from="rgbd_image" to="/camera/rgbd_image"/-->
-      <param name="frame_id"                    type="string" value="base_link"/>
-      <param name="wait_for_transform_duration" type="double" value="$(arg wait_for_transform)"/>
-      <!--param name="queue_size" type="int" value="50" /-->
-      <remap from="rgb/image"       to="$(arg rgb_topic)"/>
-      <remap from="depth/image"     to="$(arg depth_topic)"/>
-      <remap from="rgb/camera_info" to="$(arg camera_info_topic)"/>
-    </node>
+  <!-- Odometry -->
+  <node pkg="rtabmap_ros" type="rgbd_odometry" name="rgbd_odometry" output="screen">
+    <param name="subscribe_rgbd" type="bool" value="true"/>
+    <param name="frame_id" type="string" value="base_link"/>
+    <remap from="rgbd_image" to="/rtabmap/rgbd_image"/-->
+    <param name="frame_id" type="string" value="base_link"/>
+    <param name="wait_for_transform_duration" type="double" value="$(arg wait_for_transform)"/>
+    <param name="Reg/Force3DoF" value="true" />
+    <!--param name="queue_size" type="int" value="50" /-->
+    <!--remap from="rgb/image" to="$(arg rgb_topic)"/>
+      <remap from="depth/image" to="$(arg depth_topic)"/>
+      <remap from="rgb/camera_info" to="$(arg camera_info_topic)"/-->
+  </node>
 
-    <include file="$(find terabot_drive)/launch/base_control.launch">
-    </include>
+  <include file="$(find terabot_drive)/launch/base_control.launch">
+  </include>
 
 </launch>

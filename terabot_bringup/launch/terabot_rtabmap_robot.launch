@@ -14,7 +14,7 @@
   </include>
 
   <!-- imu -->
-  <node pkg="imu_filter_madgwick" type="imu_filter_node" name="imu_filter" output="screen">
+  <node if="false" pkg="imu_filter_madgwick" type="imu_filter_node" name="imu_filter" output="screen">
     <param name="fixed_frame" value="odom" />
     <param name="use_mag" value="false" />
     <param name="publish_tf" value="false" />

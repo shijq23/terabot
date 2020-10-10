@@ -38,11 +38,11 @@ source devel/setup.bash
 cd ~/git
 git clone https://github.com/shijq23/terabot.git
 cd ~/catkin_ws/src
-ln -s ~/git/terabot/tarabot_control
+ln -s ~/git/terabot/terabot_control
 ln -s ~/git/terabot/terabot_description
 ln -s ~/git/terabot/terabot_gazebo
 cd ~/catkin_ws
-catkin make
+catkin_make
 source devel/setup.bash
 ```
 

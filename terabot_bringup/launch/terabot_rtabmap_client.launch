@@ -9,16 +9,16 @@
       <arg name="compressed" value="true" />
       <arg name="rgbd_sync" value="true" />
       
-      <arg name="depth_topic" value="/camera/aligned_depth_to_color/image_raw" />
+      <arg name="depth_topic" value="/camera/depth/image_rect_raw" />
       <arg name="rgb_topic" value="/camera/color/image_raw" />
       <arg name="camera_info_topic" value="/camera/color/camera_info" />
-      <arg name="approx_sync" value="false" />
+      <arg name="approx_sync" value="true" />
       <!--arg name="wait_imu_to_init" value="true" />
       <arg name="imu_topic" value="/rtabmap/imu" /-->
 
       <!-- odometry -->
       <arg name="visual_odometry" value="true" />
-      <arg name="approx_rgbd_sync" value="false" />
+      <arg name="approx_rgbd_sync" value="true" />
     </include>
 
     <param name="robot_description"
